@@ -1,12 +1,17 @@
 import AdminDashboard from '@/pages/Admin/Dashboard'
 import EmployerDashboard from '@/pages/Employer/Dashboard'
-import Home from '@/pages/Home';
+import Home from '@/pages/Login';
 import JobSeekerDashboard from '@/pages/JobSeeker/Dashboard'
+import Signup from '@/pages/Signup';
 
 const routeConfig = [
     {
         path: "/",
-        element: <Home/>
+        element: <Home />
+    },
+    {
+        path: "/signup",
+        element: <Signup />
     },
     {
         path: "/admin",
