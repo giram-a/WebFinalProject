@@ -1,8 +1,42 @@
-# React + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+src/
+├── api/
+│   └── axiosInstance.js
+├── components/
+│   └── ui/
+│       └── Button.jsx
+├── features/
+│   └── sample/
+│       ├── sampleSlice.js
+│       └── sampleActions.js
+├── hooks/
+│   └── useCustomHook.js
+├── layouts/
+│   ├── AdminLayout.jsx
+│   ├── EmployerLayout.jsx
+│   └── UserLayout.jsx
+├── pages/
+│   ├── Admin/
+│   │   ├── Dashboard.jsx
+│   │   ├── ManageUsers.jsx
+│   │   └── Settings.jsx
+│   ├── Employer/
+│   │   ├── Dashboard.jsx
+│   │   ├── PostJob.jsx
+│   │   └── Applications.jsx
+│   ├── User/
+│   │   ├── Dashboard.jsx
+│   │   ├── Profile.jsx
+│   │   └── Applications.jsx
+│   ├── Home.jsx
+│   └── NotFound.jsx
+├── router/
+│   └── AppRouter.jsx
+├── store/
+│   └── store.js
+├── styles/
+│   └── tailwind.css
+├── utils/
+│   └── helpers.js
+├── App.jsx
+├── index.css
+└── main.jsx
