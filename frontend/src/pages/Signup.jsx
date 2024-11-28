@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useSignUp } from '@clerk/clerk-react'
+import { useSignUp, useUser } from '@clerk/clerk-react'
 import { Button } from "@/components/ui/button"
 import { CalendarIcon, Pencil } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -26,11 +26,14 @@ import {
     InputOTPSeparator,
     InputOTPSlot,
 } from "@/components/ui/input-otp"
-import { NavLink, Navigate } from 'react-router-dom'
+import { NavLink, Navigate, useLocation } from 'react-router-dom'
 import { REGEXP_ONLY_DIGITS } from 'input-otp'
 
 const Signup = () => {
+
+    const location = useLocation();
     const { isLoaded, signUp, setActive } = useSignUp();
+    const { isLoaded: isUserLoaded, user } = useUser();
     const [password, setPassword] = useState("");
     const [pendingVerification, setPendingVerification] = useState(false);
     const [verificationCode, setVerificationCode] = useState("");
@@ -57,12 +60,6 @@ const Signup = () => {
                 emailAddress: emailId,
                 password: password
             });
-
-            await signUp.prepareVerification({
-                strategy: "oauth_google",
-                redirectUrl: "",
-                actionCompleteRedirectUrl: "",
-            })
 
             await signUp.prepareEmailAddressVerification({
                 strategy: "email_code"
@@ -92,18 +89,28 @@ const Signup = () => {
 
             if (completeSignup.status === "complete") {
                 await setActive({ session: completeSignup.createdSessionId });
-                //redirect to dashboard
+
+                if (!isUserLoaded) {
+                    return
+                }
+
+                await user.update({
+                    firstName,
+                    lastName,
+                    unsafeMetadata: {
+                        dateOfBirth: dateOfBirth,
+                        gender: gender,
+                        type: location.state?.userType || "JOB_SEEKER"
+                    }
+                });
+
+                await user.reload();
             }
 
         } catch (error) {
             console.log("Error in OTP verification");
             setError(error.errors[0].message)
         }
-    }
-
-    const handleSub = (e) => {
-        e.preventDefault()
-        console.log(verificationCode);
     }
 
     const handleOTPComplete = (value) => {
@@ -119,7 +126,7 @@ const Signup = () => {
                         <CardDescription>Enter the 6-digit code sent to your email <span className='flex justify-start gap-2 underline text-blue-950 hover:cursor-not-allowed'>{emailId}<Pencil className='hover:cursor-pointer' width={12} onClick={() => setPendingVerification(false)} /></span></CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <form action="" onSubmit={handleSub}>
+                        <form onSubmit={onCodeVerification}>
                             <div className="flex justify-center my-4">
                                 <InputOTP maxLength={6} pattern={REGEXP_ONLY_DIGITS} value={verificationCode} onChange={handleOTPComplete}>
                                     <InputOTPGroup>

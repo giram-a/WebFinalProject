@@ -119,7 +119,7 @@ const Home = () => {
           </Button>
           <div className="mt-4 text-center text-sm">
             Don&apos;t have an account?{" "}
-            <NavLink to={"/signup"} className="underline">
+            <NavLink to={"/signup"} state={{ userType: "JOB_SEEKER" }}  className="underline">
               Sign up
             </NavLink>
           </div>
