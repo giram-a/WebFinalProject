@@ -1,13 +1,18 @@
+import Navbar from '@/components/common/Navbar';
+import Sidebar from '@/components/common/Sidebar';
 import AdminDashboard from '@/pages/Admin/Dashboard'
+import AddJob from '@/pages/Employer/AddJob';
 import EmployerDashboard from '@/pages/Employer/Dashboard'
-import JobSeekerDashboard from '@/pages/JobSeeker/Dashboard'
+import Applications from '@/pages/JobSeeker/Applications';
+import Jobs from '@/pages/JobSeeker/Jobs';
 import Login from '@/pages/Login';
 import Signup from '@/pages/Signup';
+import { Outlet } from 'react-router-dom';
 
 const routeConfig = [
     {
         path: "/",
-        element: <Login/>
+        element: <Login />
     },
     {
         path: "/signup",
@@ -16,22 +21,27 @@ const routeConfig = [
     {
         path: "/admin",
         allowedRoles: ['ADMIN'],
+        element: <Sidebar role={"ADMIN"} />,
         children: [
-            { path: "dashboard", element: <AdminDashboard /> }
+            { path: "", element: <AdminDashboard /> }
         ]
     },
     {
         path: "/employer",
         allowedRoles: ['EMPLOYER'],
+        element: <Sidebar role={"EMPLOYER"} />,
         children: [
-            { path: "dashboard", element: <EmployerDashboard /> }
+            { path: "", element: <EmployerDashboard /> },
+            { path: "add-job", element: <AddJob /> }
         ]
     },
     {
         path: "/jobseeker",
         allowedRoles: ['JOB_SEEKER'],
+        element: <><Navbar /><Outlet /></>,
         children: [
-            { path: "dashboard", element: <JobSeekerDashboard /> }
+            { path: "", element: <Jobs /> },
+            { path: "applications", element: <Applications /> }
         ]
     }
 ]

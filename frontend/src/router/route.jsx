@@ -1,21 +1,29 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter, Outlet } from 'react-router-dom'
 import routeConfig from './routeConfig';
 import ProtectedRoute from './ProtectedRoute';
 
 const buildRoutes = (routes) => {
     return routes.map((route) => {
-        if (route.children) {
-            return {
-                path: route.path,
-                element: route.allowedRoles ? (
-                    <ProtectedRoute allowedRoles={route.allowedRoles} />
-                ) : (
-                    <Outlet />
-                ),
-                children: buildRoutes(route.children),
-            };
-        }
-        return { path: route.path, element: route.element };
+        const { path, element, allowedRoles, children } = route;
+
+        const wrappedElement = allowedRoles ? (
+            <ProtectedRoute allowedRoles={allowedRoles}>
+                {element || <Outlet />}
+            </ProtectedRoute>
+        ) : (
+            element || <Outlet />
+        );
+
+        return children
+            ? {
+                  path,
+                  element: wrappedElement,
+                  children: buildRoutes(children),
+              }
+            : {
+                  path,
+                  element: wrappedElement,
+              };
     });
 };
 
