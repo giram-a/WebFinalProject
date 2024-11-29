@@ -32,6 +32,7 @@ import { setUserMetaData } from '@/api/userApi'
 
 const Signup = () => {
     const navigate = useNavigate();
+    const location = useLocation();
     const { isLoaded, signUp, setActive } = useSignUp();
     const { isLoaded: isUserLoaded, user } = useUser();
     const [password, setPassword] = useState("");
@@ -44,7 +45,7 @@ const Signup = () => {
     const [gender, setGender] = useState('');
     const [emailId, setEmailId] = useState('');
 
-    if (isUserLoaded) {
+    if (isUserLoaded && user) {
         (async () => {
             const res = await setUserMetaData(user.id, {
                 dateOfBirth: dateOfBirth,
@@ -108,10 +109,11 @@ const Signup = () => {
 
     const handleGoogleSignUp = async () => {
         try {
+            const role = location.state?.userType || "JOB_SEEKER"
             const { createdSessionId } = await signUp.authenticateWithRedirect({
                 strategy: 'oauth_google',
                 redirectUrl: '/',
-                redirectUrlComplete: "/"
+                redirectUrlComplete: `/?type=GOOGLE_SIGNUP&role=${role}`
             });
 
             if (createdSessionId) {
