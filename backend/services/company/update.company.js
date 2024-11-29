@@ -2,11 +2,14 @@ import Company from "../../model/Company.model.js";
 
 export const updateCompany = async (req, res) => {
   try {
-    const { id } = req.body;
-    const company = await Company.findByIdAndUpdate(id, req.body);
+    const { id, accessStatus } = req.body;
+    if (!id || !accessStatus) {
+      return res.json({ error: "Id or accessStatus is not provided" });
+    }
+    const company = await Company.findByIdAndUpdate(id, { accessStatus });
     res.send(company);
   } catch (e) {
     console.log(e);
-    res.send(500).send({ error: e.message });
+    res.send(500).json({ error: e.message });
   }
 };
