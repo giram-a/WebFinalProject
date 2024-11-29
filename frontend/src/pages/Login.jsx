@@ -24,7 +24,7 @@ const Login = () => {
   }
 
   if (isSignedIn) {
-    return <Navigate to="/admin/dashboard" replace />;
+    // return <Navigate to="/admin/dashboard" replace />;
   }
 
   const handleSubmit = async (e) => {
