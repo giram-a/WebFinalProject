@@ -1,3 +1,4 @@
 export const API_ENDPOINTS = {
-    SETUSERMETADATA: "/addUser"
+  SETUSERMETADATA: "/addUser",
+  GETALLCOMPANIES: "/company/read",
 };

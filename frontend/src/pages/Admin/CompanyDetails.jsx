@@ -3,26 +3,21 @@ import { useParams } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2 } from 'lucide-react';
+import { getCompanyById } from '@/api/companyApi';
 
 const CompanyDetails = () => {
     const { id } = useParams();
     const [company, setCompany] = useState(
-        {
-            _id: "1",
-            name: "Company A",
-            email: "2k6L2@example.com",
-            accessStatus: "granted",
-        }  
+        {} 
     );
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchCompanyDetails = async () => {
             try {
-                // Replace this with your actual API call
-                const response = await fetch(`/api/companies/${id}`);
-                const data = await response.json();
-                setCompany(data);
+                const response = await getCompanyById(id);
+                // const data = await response.json();
+                setCompany(response.data);
             } catch (error) {
                 console.error("Failed to fetch company details:", error);
             } finally {

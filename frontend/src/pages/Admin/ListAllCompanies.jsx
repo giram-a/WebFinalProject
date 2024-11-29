@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect ,useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
     Table,
@@ -11,24 +11,21 @@ import {
 } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2 } from 'lucide-react';
+import { getAllCompanies } from '@/api/companyApi';
 
 const ListAllCompanies = () => {
     const navigate = useNavigate();
-
-    // const dispatch = useDispatch();
-
-    useEffect(() => {
-        // dispatch(fetchUsers());
+    const [companies,setCompanies] = useState([]);
+    useEffect( () => {
+        const fetchData = async () => {
+            const response = await getAllCompanies();
+            // const data = response.json();
+            console.log(response);
+            setCompanies(response.data);
+        }
+        fetchData();
     }, []);
 
-    const companies = [
-        {
-            _id: "1",
-            name: "Company A",
-            email: "2k6L2@example.com",
-            accessStatus: "granted",
-        }
-    ];
     const status = "SUCCESS"; // Replace this with your actual status
 
     const handleRowClick = (companyId) => {

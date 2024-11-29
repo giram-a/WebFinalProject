@@ -2,12 +2,12 @@ import Company from "../../model/Company.model.js";
 
 export const getCompany = async (req, res) => {
   try {
-    const { id } = req.body;
+    const { id } = req.query;
     let companies;
     if (!id) {
       companies = await Company.find({});
     } else {
-      companies = await Company.findOne(id);
+      companies = await Company.findOne({ _id: id });
     }
     return res.json(companies);
   } catch (error) {
