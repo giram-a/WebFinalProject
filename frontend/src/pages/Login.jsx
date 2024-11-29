@@ -11,11 +11,10 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { NavLink, Navigate } from 'react-router-dom'
-import { Separator } from '@/components/ui/separator'
 
-const Home = () => {
+const Login = () => {
   const { isLoaded, signIn, setActive } = useSignIn();
-  const { isSignedIn } = useUser()
+  const { isSignedIn, user } = useUser()
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -41,7 +40,7 @@ const Home = () => {
       });
 
       if (completeSignin.status !== "complete") {
-        console.log("signin not completed", completeSignup);
+        console.log("signin not completed", completeSignin);
       }
 
       if (completeSignin.status === "complete") {
@@ -60,8 +59,7 @@ const Home = () => {
     try {
       const result = await signIn.authenticateWithRedirect({
         strategy: 'oauth_google',
-        redirectUrl: '/auth-callback',
-        redirectUrlComplete: '/',
+        redirectUrl: '/'
       });
 
       if (result.status === 'complete') {
@@ -119,7 +117,7 @@ const Home = () => {
           </Button>
           <div className="mt-4 text-center text-sm">
             Don&apos;t have an account?{" "}
-            <NavLink to={"/signup"} state={{ userType: "JOB_SEEKER" }}  className="underline">
+            <NavLink to={"/signup"} state={{ userType: "JOB_SEEKER" }} className="underline">
               Sign up
             </NavLink>
           </div>
@@ -129,4 +127,4 @@ const Home = () => {
   )
 }
 
-export default Home
+export default Login
