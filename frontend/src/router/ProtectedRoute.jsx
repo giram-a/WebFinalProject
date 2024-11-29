@@ -1,7 +1,7 @@
 import { useUser } from '@clerk/clerk-react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 
-export default function ProtectedRoute({ allowedRoles }) {
+export default function ProtectedRoute({ allowedRoles, children }) {
     const { isLoaded, user, isSignedIn } = useUser();
     const location = useLocation();
 
@@ -17,5 +17,5 @@ export default function ProtectedRoute({ allowedRoles }) {
         console.log("No valid role");
         return <Navigate to="/" replace state={{ from: location }} />;
     }
-    return <Outlet />;
+    return children ? children : <Outlet />;
 }

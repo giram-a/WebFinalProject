@@ -43,9 +43,9 @@ const Login = () => {
 
   if (isSignedIn) {
     const roleToRouteMap = {
-      ADMIN: '/admin/dashboard',
-      EMPLOYER: '/employer/dashboard',
-      JOB_SEEKER: '/jobseeker/dashboard',
+      ADMIN: '/admin',
+      EMPLOYER: '/employer',
+      JOB_SEEKER: '/jobseeker',
     };
 
     const route = roleToRouteMap[user.publicMetadata.role];

@@ -1,12 +1,11 @@
 import React from 'react'
 
-const Dashboard = () => {
-
+const Applications = () => {
   return (
     <div className='flex justify-between px-12 py-4'>
-      This is admin Dashboard
+      Job Seeker Applications
     </div>
   )
 }
 
-export default Dashboard
+export default Applications
