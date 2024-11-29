@@ -1,5 +1,5 @@
 import { useSignIn, useUser } from '@clerk/clerk-react'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -10,9 +10,11 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { NavLink, Navigate } from 'react-router-dom'
+import { NavLink, Navigate, useLocation } from 'react-router-dom'
+import { setUserMetaData } from '@/api/userApi'
 
 const Login = () => {
+  const location = useLocation();
   const { isLoaded, signIn, setActive } = useSignIn();
   const { isSignedIn, user } = useUser()
   const [email, setEmail] = useState("");
@@ -23,8 +25,33 @@ const Login = () => {
     return (<>Loading ....</>)
   }
 
+  if (isSignedIn && user) {
+    const queryParams = new URLSearchParams(location.search);
+    const role = queryParams.get('role');
+    const type = queryParams.get('type');
+    if (type === "GOOGLE_SIGNUP") {
+      (async () => {
+        const res = await setUserMetaData(user.id, {
+          role: role
+        })
+        if (res.status) {
+          console.log("Metadata added");
+        }
+      })()
+    }
+  }
+
   if (isSignedIn) {
-    // return <Navigate to="/admin/dashboard" replace />;
+    const roleToRouteMap = {
+      ADMIN: '/admin/dashboard',
+      EMPLOYER: '/employer/dashboard',
+      JOB_SEEKER: '/jobseeker/dashboard',
+    };
+
+    const route = roleToRouteMap[user.publicMetadata.role];
+    if (route) {
+      return <Navigate to={route} replace />;
+    }
   }
 
   const handleSubmit = async (e) => {
