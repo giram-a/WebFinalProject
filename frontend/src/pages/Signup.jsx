@@ -26,102 +26,124 @@ import {
     InputOTPSeparator,
     InputOTPSlot,
 } from "@/components/ui/input-otp"
-import { NavLink, Navigate } from 'react-router-dom'
+import { NavLink, useNavigate, useLocation } from 'react-router-dom'
 import { REGEXP_ONLY_DIGITS } from 'input-otp'
 
 const Signup = () => {
+    const location = useLocation();
+    const navigate = useNavigate();
     const { isLoaded, signUp, setActive } = useSignUp();
     const [password, setPassword] = useState("");
     const [pendingVerification, setPendingVerification] = useState(false);
     const [verificationCode, setVerificationCode] = useState("");
     const [error, setError] = useState("");
-    const [firstName, setFirstName] = useState('')
-    const [lastName, setLastName] = useState('')
-    const [dateOfBirth, setDateOfBirth] = useState('')
-    const [gender, setGender] = useState('')
-    const [emailId, setEmailId] = useState('')
-
-
-    if (!isLoaded) {
-        return (<>Loading ....</>)
-    }
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [dateOfBirth, setDateOfBirth] = useState('');
+    const [gender, setGender] = useState('');
+    const [emailId, setEmailId] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!isLoaded) {
-            return;
-        }
+        if (!isLoaded) return;
 
         try {
             await signUp.create({
                 emailAddress: emailId,
-                password: password
+                password: password,
+                firstName: firstName,
+                lastName: lastName,
+                unsafeMetadata: {
+                    dateOfBirth: dateOfBirth,
+                    gender: gender,
+                    type: location.state?.userType || "JOB_SEEKER",
+                },
             });
 
-            await signUp.prepareVerification({
-                strategy: "oauth_google",
-                redirectUrl: "",
-                actionCompleteRedirectUrl: "",
-            })
-
             await signUp.prepareEmailAddressVerification({
-                strategy: "email_code"
+                strategy: "email_code",
             });
 
             setPendingVerification(true);
         } catch (error) {
-            console.log(JSON.stringify(error, null, 2));
-            setError(error.errors[0].message)
+            console.error(error);
+            setError(error.errors?.[0]?.message || "An error occurred");
         }
-    }
+    };
 
     const onCodeVerification = async (e) => {
         e.preventDefault();
-        if (!isLoaded) {
-            return;
-        }
+        if (!isLoaded) return;
 
         try {
             const completeSignup = await signUp.attemptEmailAddressVerification({
-                code: verificationCode
-            })
-
-            if (completeSignup.status !== "complete") {
-                console.log("Signup not completed", completeSignup);
-            }
+                code: verificationCode,
+            });
 
             if (completeSignup.status === "complete") {
                 await setActive({ session: completeSignup.createdSessionId });
-                //redirect to dashboard
+                console.log("Signup completed");
+                navigate("/", { replace: true });
+                return;
+            } else {
+                console.log("Signup not completed", completeSignup);
             }
-
         } catch (error) {
-            console.log("Error in OTP verification");
-            setError(error.errors[0].message)
+            console.error("Error in OTP verification", error);
+            setError(error.errors?.[0]?.message || "An error occurred");
         }
-    }
-
-    const handleSub = (e) => {
-        e.preventDefault()
-        console.log(verificationCode);
-    }
+    };
 
     const handleOTPComplete = (value) => {
         setVerificationCode(value);
     };
 
+    const handleGoogleSignUp = async () => {
+        try {
+            const { createdSessionId } = await signUp.authenticateWithRedirect({
+                strategy: 'oauth_google',
+                redirectUrl: '/',
+                redirectUrlComplete: "/"
+            });
+
+            if (createdSessionId) {
+                await setActive({ session: createdSessionId });
+                console.log("Google signup completed");
+                navigate("/", { replace: true });
+            }
+        } catch (error) {
+            console.error("Google sign up error:", error);
+            setError(error.errors?.[0]?.message);
+        }
+    }
+
     return (
         <div className="flex h-screen w-full items-center justify-center px-4">
-            {pendingVerification ?
-                (<Card className="w-full max-w-md mx-auto">
+            {pendingVerification ? (
+                <Card className="w-full max-w-md mx-auto">
                     <CardHeader>
                         <CardTitle>OTP Validation</CardTitle>
-                        <CardDescription>Enter the 6-digit code sent to your email <span className='flex justify-start gap-2 underline text-blue-950 hover:cursor-not-allowed'>{emailId}<Pencil className='hover:cursor-pointer' width={12} onClick={() => setPendingVerification(false)} /></span></CardDescription>
+                        <CardDescription>
+                            Enter the 6-digit code sent to your email{" "}
+                            <span className="flex justify-start gap-2 underline text-blue-950">
+                                {emailId}
+                                <Pencil
+                                    className="hover:cursor-pointer"
+                                    width={12}
+                                    onClick={() => setPendingVerification(false)}
+                                />
+                            </span>
+                        </CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <form action="" onSubmit={handleSub}>
+                        <form onSubmit={onCodeVerification}>
                             <div className="flex justify-center my-4">
-                                <InputOTP maxLength={6} pattern={REGEXP_ONLY_DIGITS} value={verificationCode} onChange={handleOTPComplete}>
+                                <InputOTP
+                                    maxLength={6}
+                                    pattern={REGEXP_ONLY_DIGITS}
+                                    value={verificationCode}
+                                    onChange={handleOTPComplete}
+                                >
                                     <InputOTPGroup>
                                         <InputOTPSlot index={0} />
                                         <InputOTPSlot index={1} />
@@ -135,13 +157,14 @@ const Signup = () => {
                                     </InputOTPGroup>
                                 </InputOTP>
                             </div>
-
-                            <Button type="submit" className="w-full mt-3">Validate OTP</Button>
+                            <Button type="submit" className="w-full mt-3">
+                                Validate OTP
+                            </Button>
                         </form>
                     </CardContent>
-                </Card>)
-                :
-                (<Card className="w-full max-w-md mx-auto">
+                </Card>
+            ) : (
+                <Card className="w-full max-w-md mx-auto">
                     <CardHeader>
                         <CardTitle>Sign Up</CardTitle>
                         <CardDescription>Create your account to get started.</CardDescription>
@@ -173,7 +196,7 @@ const Signup = () => {
                                 <Popover>
                                     <PopoverTrigger asChild>
                                         <Button
-                                            variant={"outline"}
+                                            variant="outline"
                                             className={cn(
                                                 "w-full justify-start text-left font-normal",
                                                 !dateOfBirth && "text-muted-foreground"
@@ -226,7 +249,10 @@ const Signup = () => {
                                     required
                                 />
                             </div>
-                            <Button type="submit" className="w-full">Sign Up</Button>
+                            <p className='mt-2 text-red-500'>{error}</p>
+                            <Button type="submit" className="w-full">
+                                Sign Up
+                            </Button>
                         </form>
                         <div className="relative mt-3">
                             <div className="absolute inset-0 flex items-center">
@@ -238,19 +264,22 @@ const Signup = () => {
                                 </span>
                             </div>
                         </div>
-                        <Button variant="outline" type="button" className="w-full mt-4">
-                            Sign up with Google
+                        <Button variant="outline" className="w-full mt-3" onClick={handleGoogleSignUp}>
+                            Google
                         </Button>
-                        <div className="mt-4 text-center text-sm">
-                            Already have an account?{" "}
-                            <NavLink to={"/"} className="underline">
-                                Sign In
+                        <div className="flex w-full justify-center mt-3 text-sm">
+                            <span className="text-muted-foreground mr-2">
+                                Already have an account?
+                            </span>
+                            <NavLink className="text-blue-950 underline" to="/sign-in">
+                                Login
                             </NavLink>
                         </div>
                     </CardContent>
-                </Card>)}
+                </Card>
+            )}
         </div>
-    )
-}
+    );
+};
 
-export default Signup
+export default Signup;
