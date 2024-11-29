@@ -1,8 +1,12 @@
+import { UserButton } from '@clerk/clerk-react'
 import React from 'react'
 
 const Dashboard = () => {
   return (
-    <div>Job Seeker Dashboard</div>
+    <div className='flex justify-between px-12 py-4'>
+      Job Seeker Dashboard
+      <UserButton />
+    </div>
   )
 }
 

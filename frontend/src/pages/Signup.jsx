@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useSignUp } from '@clerk/clerk-react'
+import { useSignUp, useUser } from '@clerk/clerk-react'
 import { Button } from "@/components/ui/button"
 import { CalendarIcon, Pencil } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -28,11 +28,12 @@ import {
 } from "@/components/ui/input-otp"
 import { NavLink, useNavigate, useLocation } from 'react-router-dom'
 import { REGEXP_ONLY_DIGITS } from 'input-otp'
+import { setUserMetaData } from '@/api/userApi'
 
 const Signup = () => {
-    const location = useLocation();
     const navigate = useNavigate();
     const { isLoaded, signUp, setActive } = useSignUp();
+    const { isLoaded: isUserLoaded, user } = useUser();
     const [password, setPassword] = useState("");
     const [pendingVerification, setPendingVerification] = useState(false);
     const [verificationCode, setVerificationCode] = useState("");
@@ -43,6 +44,20 @@ const Signup = () => {
     const [gender, setGender] = useState('');
     const [emailId, setEmailId] = useState('');
 
+    if (isUserLoaded) {
+        (async () => {
+            const res = await setUserMetaData(user.id, {
+                dateOfBirth: dateOfBirth,
+                gender: gender,
+                role: location.state?.userType || "JOB_SEEKER",
+            })
+            if (res.status) {
+                navigate("/", { replace: true });
+            }
+            return;
+        })()
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!isLoaded) return;
@@ -52,12 +67,7 @@ const Signup = () => {
                 emailAddress: emailId,
                 password: password,
                 firstName: firstName,
-                lastName: lastName,
-                unsafeMetadata: {
-                    dateOfBirth: dateOfBirth,
-                    gender: gender,
-                    type: location.state?.userType || "JOB_SEEKER",
-                },
+                lastName: lastName
             });
 
             await signUp.prepareEmailAddressVerification({
@@ -83,8 +93,6 @@ const Signup = () => {
             if (completeSignup.status === "complete") {
                 await setActive({ session: completeSignup.createdSessionId });
                 console.log("Signup completed");
-                navigate("/", { replace: true });
-                return;
             } else {
                 console.log("Signup not completed", completeSignup);
             }

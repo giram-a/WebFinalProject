@@ -15,21 +15,21 @@ const routeConfig = [
     },
     {
         path: "/admin",
-        allowedRoles: ['admin'],
+        allowedRoles: ['ADMIN'],
         children: [
             { path: "dashboard", element: <AdminDashboard /> }
         ]
     },
     {
         path: "/employer",
-        allowedRoles: ['employer'],
+        allowedRoles: ['EMPLOYER'],
         children: [
             { path: "dashboard", element: <EmployerDashboard /> }
         ]
     },
     {
         path: "/jobseeker",
-        allowedRoles: ['jobseeker'],
+        allowedRoles: ['JOB_SEEKER'],
         children: [
             { path: "dashboard", element: <JobSeekerDashboard /> }
         ]
