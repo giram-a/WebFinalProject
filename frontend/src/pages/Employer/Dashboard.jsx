@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from 'react';
-import { findCompany } from "@/api/companyApi";
+import { findCompany , createCompany} from "@/api/companyApi";
 import { useAuth, useUser } from "@clerk/clerk-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -15,6 +15,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { toast } from "@/hooks/use-toast"
+import { Toaster } from '@/components/ui/toaster';
 
 const Dashboard = () => {
   const { getToken } = useAuth()
@@ -22,6 +23,8 @@ const Dashboard = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [companyName, setCompanyName] = useState('');
   const [companyAddress, setCompanyAddress] = useState('');
+  const [companyEmail, setCompanyEmail] = useState('');
+  const [companyProfilePic, setCompanyProfilePic] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
@@ -55,9 +58,12 @@ const Dashboard = () => {
       const res = await createCompany({
         name: companyName,
         address: companyAddress,
-        userId: user.id
+        email: user.emailAddresses[0].emailAddress,
+        profilePic: companyProfilePic,
+        user: user.id
       }, token);
-      if (res.status === 'success') {
+      console.log(res);
+      if (res.status) {
         toast({
           title: "Success",
           description: "Company created successfully.",
@@ -83,19 +89,29 @@ const Dashboard = () => {
   }
 
   return (
+
     <div className='flex flex-col items-center justify-center min-h-screen bg-gray-100'>
       <h1 className="text-3xl font-bold mb-4">Employer Dashboard</h1>
-      
+      <Toaster/>
       <Dialog open={isDialogOpen} onOpenChange={() => {}}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Create Your Company</DialogTitle>
             <DialogDescription>
-              Please provide your company details to get started.
+              Please provide your company details to get started. Email address will be the same address you used to sign in with Futurehire.
             </DialogDescription>
           </DialogHeader>
           <form onSubmit={handleSubmit}>
             <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="companyEmail" className="text-right">
+                  Email
+                </Label>
+                <p
+                  className="col-span-3"
+                  required
+                >{user.emailAddresses[0].emailAddress}</p>
+              </div>
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="companyName" className="text-right">
                   Name
@@ -108,6 +124,7 @@ const Dashboard = () => {
                   required
                 />
               </div>
+
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="companyAddress" className="text-right">
                   Address
@@ -116,6 +133,20 @@ const Dashboard = () => {
                   id="companyAddress"
                   value={companyAddress}
                   onChange={(e) => setCompanyAddress(e.target.value)}
+                  className="col-span-3"
+                  required
+                />
+              </div>
+
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="companyProfilePic" className="text-right">
+                  Profile Picture URL
+                </Label>
+                <Input
+                  id="companyProfilePic"
+                  type="url"
+                  value={companyProfilePic}
+                  onChange={(e) => setCompanyProfilePic(e.target.value)}
                   className="col-span-3"
                   required
                 />

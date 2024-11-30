@@ -67,3 +67,17 @@ export const findCompany = async (id, token) => {
     return { status: false, data: error };
   }
 };
+
+export const createCompany = async (data, token) => {
+  try {
+    const response = await apiClient.post(API_ENDPOINTS.CREATECOMPANY, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return { status: true, data: response.data };
+  } catch (error) {
+    console.log("Error creating company");
+    return { status: false, data: error };
+  }
+};

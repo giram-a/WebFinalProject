@@ -8,7 +8,7 @@ export const createCompany = async (req, res) => {
       address,
       email,
       profilePic,
-      // users: [user],
+      user,
     });
     res.json({
       message:

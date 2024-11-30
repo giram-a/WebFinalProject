@@ -6,4 +6,5 @@ export const API_ENDPOINTS = {
   GETALLCOMPANIES: "/company/read",
   UPDATECOMPANY: "/company/update",
   FINDCOMPANY: "/company/find",
+  CREATECOMPANY: "/company/create",
 };
