@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2, MapPin, Mail, Users } from 'lucide-react';
-import { getAllCompanies, getCompanyById } from '@/api/companyApi';
+import { getAllCompanies, getCompanyById,updateCompany } from '@/api/companyApi';
 import { useAuth } from '@clerk/clerk-react';
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -59,7 +59,6 @@ const EmployerList = () => {
     const handleRowClick = async (companyId) => {
         try {
             const response = await getCompanyById(companyId,await getToken());
-            // console.log(response.data);
             setSelectedCompany(response.data[0]);
             setIsDrawerOpen(true);
         } catch (error) {
@@ -74,7 +73,7 @@ const EmployerList = () => {
 
     const handleApprove = async () => {
         try {
-            const response = await updateCompany(selectedCompany._id, "APPROVED");
+            const response = await updateCompany(selectedCompany._id, "APPROVED",await getToken());
             if (!response.status) {
                 throw new Error("Failed to approve company");
             }
@@ -85,6 +84,7 @@ const EmployerList = () => {
             setIsDrawerOpen(false);
             // Refresh the companies list
             const updatedCompanies = await getAllCompanies(await getToken());
+            console.log(updatedCompanies);
             setCompanies(updatedCompanies.data);
         } catch (error) {
             console.error("Failed to approve company:", error);
@@ -98,7 +98,7 @@ const EmployerList = () => {
 
     const handleDeny = async () => {
         try {
-            const response = await updateCompany(selectedCompany._id, "REJECTED");
+            const response = await updateCompany(selectedCompany._id, "REJECTED",await getToken());
             if (!response.status) {
                 throw new Error("Failed to deny company");
             }
@@ -109,6 +109,7 @@ const EmployerList = () => {
             setIsDrawerOpen(false);
             // Refresh the companies list
             const updatedCompanies = await getAllCompanies(await getToken());
+            console.log(updatedCompanies);
             setCompanies(updatedCompanies.data);
         } catch (error) {
             console.error("Failed to deny company:", error);

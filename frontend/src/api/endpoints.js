@@ -4,4 +4,5 @@ export const API_ENDPOINTS = {
   GETALLJOBS: "/job/get",
   CREATEUSER: "/user/create",
   GETALLCOMPANIES: "/company/read",
+  UPDATECOMPANY: "/company/update",
 };
