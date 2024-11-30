@@ -1,5 +1,6 @@
 export const API_ENDPOINTS = {
-    SETUSERMETADATA: "/addUser",
+    SETUSERMETADATA: "/addUserMetadata",
     CREATEJOB: '/job/create',
-    GETALLJOBS: '/job/get'
+    GETALLJOBS: '/job/get',
+    CREATEUSER: '/user/create'
 };

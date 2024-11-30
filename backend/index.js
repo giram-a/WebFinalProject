@@ -4,7 +4,8 @@ import cors from "cors";
 import { database } from "./database/database.js";
 import CompanyRouter from "./routes/Company.router.js";
 import jobRoute from "./routes/jobs.route.js";
-import AddUserRoute from "./routes/auth.route.js";
+import AddUserMetaData from "./routes/auth.route.js";
+import UserRoute from './routes/user.route.js'
 import { clerkMiddleware, verifyToken } from '@clerk/express'
 dotenv.config();
 
@@ -51,8 +52,9 @@ async function authMiddleware(req, res, next) {
 app.use(authMiddleware);
 
 app.use("/company", CompanyRouter);
-app.use("/addUser", AddUserRoute);
+app.use("/addUserMetadata", AddUserMetaData);
 app.use("/job", jobRoute)
+app.use("/user", UserRoute)
 
 app.listen(process.env.PORT, () => {
   database.connectToDb();

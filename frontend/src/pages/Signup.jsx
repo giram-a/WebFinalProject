@@ -28,7 +28,7 @@ import {
 } from "@/components/ui/input-otp"
 import { NavLink, useNavigate, useLocation } from 'react-router-dom'
 import { REGEXP_ONLY_DIGITS } from 'input-otp'
-import { setUserMetaData } from '@/api/userApi'
+import { createUser, setUserMetaData } from '@/api/userApi'
 
 const Signup = () => {
     const navigate = useNavigate();
@@ -54,6 +54,8 @@ const Signup = () => {
                 gender: gender,
                 role: location.state?.userType || "JOB_SEEKER",
             }, token)
+            const userData = { userId: user.id, firstName, lastName, dateOfBirth: dateOfBirth.toString(), gender, emailAddress: emailId, password, role: location.state?.userType || "JOB_SEEKER" }
+            await createUser(userData, token);
             if (res.status) {
                 navigate("/", { replace: true });
             }
@@ -121,7 +123,6 @@ const Signup = () => {
             if (createdSessionId) {
                 await setActive({ session: createdSessionId });
                 console.log("Google signup completed");
-                navigate("/", { replace: true });
             }
         } catch (error) {
             console.error("Google sign up error:", error);
