@@ -1,4 +1,4 @@
-import { useSignIn, useUser } from '@clerk/clerk-react'
+import { useAuth, useSignIn, useUser } from '@clerk/clerk-react'
 import React, { useState, useEffect } from 'react'
 import { Button } from "@/components/ui/button"
 import {
@@ -10,38 +10,48 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { NavLink, Navigate, useLocation } from 'react-router-dom'
+import { NavLink, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { setUserMetaData } from '@/api/userApi'
 
 const Login = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { isLoaded, signIn, setActive } = useSignIn();
+  const { getToken } = useAuth()
   const { isSignedIn, user } = useUser()
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
+  useEffect(() => {
+    if (isSignedIn && user) {
+      const queryParams = new URLSearchParams(location.search);
+      const role = queryParams.get('role');
+      const type = queryParams.get('type');
+
+      if (type === "GOOGLE_SIGNUP") {
+        (async () => {
+          let token = await getToken();
+          const res = await setUserMetaData(user.id, { role }, token);
+          if (res.status) {
+            await user.reload();
+            routeUser();
+          }
+        })();
+      } else {
+        (async () => {
+          await user.reload();
+          routeUser();
+        })()
+      }
+    }
+  }, [isSignedIn, user, location.search]);
+
   if (!isLoaded) {
     return (<>Loading ....</>)
   }
 
-  if (isSignedIn && user) {
-    const queryParams = new URLSearchParams(location.search);
-    const role = queryParams.get('role');
-    const type = queryParams.get('type');
-    if (type === "GOOGLE_SIGNUP") {
-      (async () => {
-        const res = await setUserMetaData(user.id, {
-          role: role
-        })
-        if (res.status) {
-          console.log("Metadata added");
-        }
-      })()
-    }
-  }
-
-  if (isSignedIn) {
+  function routeUser() {
     const roleToRouteMap = {
       ADMIN: '/admin',
       EMPLOYER: '/employer',
@@ -50,7 +60,7 @@ const Login = () => {
 
     const route = roleToRouteMap[user.publicMetadata.role];
     if (route) {
-      return <Navigate to={route} replace />;
+      navigate(route, { replace: true });
     }
   }
 
@@ -72,7 +82,6 @@ const Login = () => {
 
       if (completeSignin.status === "complete") {
         await setActive({ session: completeSignin.createdSessionId });
-        console.log(completeSignin.userData);
         return <Navigate to="/admin/dashboard" replace state={{ from: location }} />;
       }
 

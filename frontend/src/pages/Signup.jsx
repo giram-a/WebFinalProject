@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useSignUp, useUser } from '@clerk/clerk-react'
+import { useAuth, useSignUp, useUser } from '@clerk/clerk-react'
 import { Button } from "@/components/ui/button"
 import { CalendarIcon, Pencil } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -35,6 +35,7 @@ const Signup = () => {
     const location = useLocation();
     const { isLoaded, signUp, setActive } = useSignUp();
     const { isLoaded: isUserLoaded, user } = useUser();
+    const { getToken } = useAuth();
     const [password, setPassword] = useState("");
     const [pendingVerification, setPendingVerification] = useState(false);
     const [verificationCode, setVerificationCode] = useState("");
@@ -47,11 +48,12 @@ const Signup = () => {
 
     if (isUserLoaded && user) {
         (async () => {
+            let token = await getToken();
             const res = await setUserMetaData(user.id, {
                 dateOfBirth: dateOfBirth,
                 gender: gender,
                 role: location.state?.userType || "JOB_SEEKER",
-            })
+            }, token)
             if (res.status) {
                 navigate("/", { replace: true });
             }

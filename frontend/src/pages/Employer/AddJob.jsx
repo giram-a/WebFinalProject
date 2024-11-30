@@ -4,11 +4,14 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-// import { createJob } from '@/api/jobsApi'
 import { useToast } from '@/hooks/use-toast.js'
 import { Toaster } from '@/components/ui/toaster'
+import { createJob } from '@/api/jobsApi'
+import { useAuth } from '@clerk/clerk-react'
 
 const AddJob = () => {
+
+  const { getToken } = useAuth();
 
   const initialFormState = {
     companyName: "",
@@ -34,12 +37,19 @@ const AddJob = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await createJob(formData)
+    let token = await getToken();
+    const res = await createJob(formData, token)
     console.log("job creation res", res);
-    toast({
-      description: res.message,
-    })
-    setFormData(initialFormState);
+    if(res.status){
+      toast({
+        description: res.data.message,
+      })
+      setFormData(initialFormState);
+    }else{
+      toast({
+        description: "Something went wrong",
+      })
+    }
   };
 
   return (
