@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState,useEffect } from 'react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -7,11 +7,38 @@ import { Textarea } from "@/components/ui/textarea"
 import { useToast } from '@/hooks/use-toast.js'
 import { Toaster } from '@/components/ui/toaster'
 import { createJob } from '@/api/jobsApi'
-import { useAuth } from '@clerk/clerk-react'
+import { useAuth, useUser } from '@clerk/clerk-react'
+import { findCompany } from '@/api/companyApi'
 
 const AddJob = () => {
-
   const { getToken } = useAuth();
+  const { user,isLoaded } = useUser();
+
+  
+    useEffect(() => {
+      if (isLoaded && user) {
+        fetchDataForCompany();
+      }
+    }, [isLoaded, user]);
+    
+    const fetchDataForCompany = async () => {
+      try {
+      console.log(user)
+      let token = await getToken();
+      const res = await findCompany(user.id, token);
+      // console.log(res.data)
+      if (res.data.accessStatus === "PENDING") {
+        alert("approval needed")
+      }
+    } catch (error) {
+      console.error("Error fetching company data:", error);
+      toast({
+        title: "Error",
+        description: "Failed to fetch company data. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
 
   const initialFormState = {
     companyName: "",
