@@ -4,7 +4,7 @@ const Dashboard = () => {
 
   return (
     <div className='flex justify-between px-12 py-4'>
-      This is admin Dashboard
+      Stats here
     </div>
   )
 }

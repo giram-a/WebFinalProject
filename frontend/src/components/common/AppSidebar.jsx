@@ -1,4 +1,4 @@
-import { PlusSquare, LayoutDashboard } from "lucide-react"
+import { PlusSquare, LayoutDashboard,Group } from "lucide-react"
 import {
     Sidebar,
     SidebarContent,
@@ -32,6 +32,11 @@ export function AppSidebar({ role }) {
                 title: "Dashboard",
                 url: "/admin",
                 icon: LayoutDashboard,
+            },
+            {
+                title: "Employers",
+                url: "/admin/employers",
+                icon: Group,
             },
         )
     }
