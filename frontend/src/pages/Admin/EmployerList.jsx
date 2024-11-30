@@ -1,5 +1,3 @@
-import { cn } from '@/lib/utils';
-
 import { useEffect, useState } from 'react';
 import {
     Table,
@@ -11,23 +9,14 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2, MapPin, Mail, Users } from 'lucide-react';
-import { getAllCompanies, getCompanyById,updateCompany } from '@/api/companyApi';
+import { Loader2, MapPin, Mail, Users, CircleXIcon } from 'lucide-react';
+import { getAllCompanies, getCompanyById, updateCompany } from '@/api/companyApi';
 import { useAuth } from '@clerk/clerk-react';
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "@/hooks/use-toast";
-import {
-    Drawer,
-    DrawerClose,
-    DrawerContent,
-    DrawerDescription,
-    DrawerFooter,
-    DrawerHeader,
-    DrawerTitle,
-    DrawerTrigger,
-} from "@/components/ui/drawer";
+import { Drawer } from 'vaul';
 
 const EmployerList = () => {
     const { getToken } = useAuth();
@@ -58,7 +47,7 @@ const EmployerList = () => {
 
     const handleRowClick = async (companyId) => {
         try {
-            const response = await getCompanyById(companyId,await getToken());
+            const response = await getCompanyById(companyId, await getToken());
             setSelectedCompany(response.data[0]);
             setIsDrawerOpen(true);
         } catch (error) {
@@ -73,7 +62,7 @@ const EmployerList = () => {
 
     const handleApprove = async () => {
         try {
-            const response = await updateCompany(selectedCompany._id, "APPROVED",await getToken());
+            const response = await updateCompany(selectedCompany._id, "APPROVED", await getToken());
             if (!response.status) {
                 throw new Error("Failed to approve company");
             }
@@ -98,7 +87,7 @@ const EmployerList = () => {
 
     const handleDeny = async () => {
         try {
-            const response = await updateCompany(selectedCompany._id, "REJECTED",await getToken());
+            const response = await updateCompany(selectedCompany._id, "REJECTED", await getToken());
             if (!response.status) {
                 throw new Error("Failed to deny company");
             }
@@ -122,7 +111,7 @@ const EmployerList = () => {
     };
 
     return (
-        
+
         <Card className="w-full max-w-4xl mx-auto mt-8">
             <CardHeader>
                 <CardTitle>Companies List</CardTitle>
@@ -145,8 +134,8 @@ const EmployerList = () => {
                         <TableBody>
                             {companies.length > 0 ? (
                                 companies.map((company) => (
-                                    <TableRow 
-                                        key={company._id} 
+                                    <TableRow
+                                        key={company._id}
                                         onClick={() => handleRowClick(company._id)}
                                         className="cursor-pointer hover:bg-gray-100"
                                     >
@@ -167,68 +156,74 @@ const EmployerList = () => {
                 )}
             </CardContent>
 
-            <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen} direction="right">
-                <DrawerContent>
-                    <DrawerHeader className="text-left">
-                        <DrawerTitle>Company Details</DrawerTitle>
-                        <DrawerDescription>View and manage company information</DrawerDescription>
-                    </DrawerHeader>
-                    {selectedCompany && (
-                        <div className="px-4">
-                            <div className="flex items-center gap-4 mb-4">
-                                <Avatar className="w-16 h-16">
-                                    <AvatarImage src={selectedCompany.profilePic} alt={selectedCompany.name} />
-                                    <AvatarFallback>{selectedCompany.name.charAt(0)}</AvatarFallback>
-                                </Avatar>
-                                <div>
-                                    <h2 className="text-2xl font-bold">{selectedCompany.name}</h2>
-                                    <p className="text-sm text-gray-500">ID: {selectedCompany._id}</p>
-                                </div>
-                            </div>
-                            <div className="space-y-4">
-                                <div className="flex items-center gap-2">
-                                    <MapPin className="w-5 h-5 text-gray-500" />
-                                    <span>{selectedCompany.address}</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <Mail className="w-5 h-5 text-gray-500" />
-                                    <a href={`mailto:${selectedCompany.email}`} className="text-blue-500 hover:underline">
-                                        {selectedCompany.email}
-                                    </a>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <Users className="w-5 h-5 text-gray-500" />
-                                    {/* <span>{selectedCompany.users.length} user(s)</span> */}
-                                </div>
-                                <div>
-                                    <h3 className="font-semibold mb-2">Access Status</h3>
-                                    {Array.isArray(selectedCompany.accessStatus) ? (
-                                        selectedCompany.accessStatus.map((status, index) => (
-                                            <Badge key={index} variant={status === 'PENDING' ? 'outline' : 'default'} className="mr-2">
-                                                {status}
-                                            </Badge>
-                                        ))
-                                    ) : (
-                                        <Badge variant={selectedCompany.accessStatus === 'PENDING' ? 'outline' : 'default'}>
-                                            {selectedCompany.accessStatus}
-                                        </Badge>
-                                    )}
-                                </div>
+            <Drawer.Root open={isDrawerOpen} onOpenChange={setIsDrawerOpen} direction="right" dismissible={false}>
+                <Drawer.Portal>
+                    <Drawer.Overlay className="fixed inset-0 bg-black/40" />
+                    <Drawer.Content
+                        className="right-2 top-2 bottom-2 fixed z-10 outline-none w-fit flex"
+                        style={{ '--initial-transform': 'calc(100% + 100px)' }}
+                    >
+                        <div className="bg-zinc-50 h-full w-full grow p-5 flex flex-col rounded-[16px]">
+                            <div className="max-w-md mx-auto">
+                                <Drawer.Title className="float-end text-zinc-900">
+                                    <CircleXIcon onClick={() => setIsDrawerOpen(false)} />
+                                </Drawer.Title>
+                                {selectedCompany && (
+                                    <div className="px-4">
+                                        <div className="flex items-center gap-4 mb-4">
+                                            <Avatar className="w-16 h-16">
+                                                <AvatarImage src={selectedCompany.profilePic} alt={selectedCompany.name} />
+                                                <AvatarFallback>{selectedCompany.name.charAt(0)}</AvatarFallback>
+                                            </Avatar>
+                                            <div>
+                                                <h2 className="text-2xl font-bold">{selectedCompany.name}</h2>
+                                                <p className="text-sm text-gray-500">ID: {selectedCompany._id}</p>
+                                            </div>
+                                        </div>
+                                        <div className="space-y-4">
+                                            <div className="flex items-center gap-2">
+                                                <MapPin className="w-5 h-5 text-gray-500" />
+                                                <span>{selectedCompany.address}</span>
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                                <Mail className="w-5 h-5 text-gray-500" />
+                                                <a href={`mailto:${selectedCompany.email}`} className="text-blue-500 hover:underline">
+                                                    {selectedCompany.email}
+                                                </a>
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                                <Users className="w-5 h-5 text-gray-500" />
+                                                <span>{selectedCompany.users.length || 0} user(s)</span>
+                                            </div>
+                                            <div>
+                                                <h3 className="font-semibold mb-2">Access Status</h3>
+                                                {Array.isArray(selectedCompany.accessStatus) ? (
+                                                    selectedCompany.accessStatus.map((status, index) => (
+                                                        <Badge key={index} variant={status === 'PENDING' ? 'outline' : 'default'} className="mr-2">
+                                                            {status}
+                                                        </Badge>
+                                                    ))
+                                                ) : (
+                                                    <Badge variant={selectedCompany.accessStatus === 'PENDING' ? 'outline' : 'default'}>
+                                                        {selectedCompany.accessStatus}
+                                                    </Badge>
+                                                )}
+                                            </div>
+                                        </div>
+                                        <div className='flex gap-4 py-5'>
+                                            <Button onClick={handleDeny} variant="destructive">Deny</Button>
+                                            <Button onClick={handleApprove}>Approve</Button>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         </div>
-                    )}
-                    <DrawerFooter className="flex justify-end space-x-4">
-                        <DrawerClose asChild>
-                            <Button variant="outline">Close</Button>
-                        </DrawerClose>
-                        <Button onClick={handleDeny} variant="destructive">Deny</Button>
-                        <Button onClick={handleApprove}>Approve</Button>
-                    </DrawerFooter>
-                </DrawerContent>
-            </Drawer>
+
+                    </Drawer.Content>
+                </Drawer.Portal>
+            </Drawer.Root>
         </Card>
     );
 };
 
 export default EmployerList;
-
