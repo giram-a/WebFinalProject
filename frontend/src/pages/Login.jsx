@@ -34,7 +34,6 @@ const Login = () => {
           let token = await getToken();
           const res = await setUserMetaData(user.id, { role }, token);
           const userData = { userId: user.id, firstName: user.firstName, lastName: user.lastName, emailAddress: user.emailAddresses[0].emailAddress, role: role || "JOB_SEEKER" }
-          console.log(userData);
           await createUser(userData, token);
           if (res.status) {
             await user.reload();
@@ -48,7 +47,7 @@ const Login = () => {
         })()
       }
     }
-  }, [isSignedIn, user, location.search]);
+  }, [isSignedIn, location.search]);
 
   if (!isLoaded) {
     return (<>Loading ....</>)
