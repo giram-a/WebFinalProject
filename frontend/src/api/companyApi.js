@@ -23,6 +23,7 @@ export const getCompanyById = async (id, token) => {
         },
       }
     );
+    console.log(response);
     return { status: true, data: response.data };
   } catch (error) {
     console.log("Error getting company by ID");

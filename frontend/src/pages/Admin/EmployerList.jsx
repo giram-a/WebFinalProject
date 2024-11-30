@@ -48,7 +48,8 @@ const EmployerList = () => {
     const handleRowClick = async (companyId) => {
         try {
             const response = await getCompanyById(companyId, await getToken());
-            setSelectedCompany(response.data[0]);
+            console.log(response.data)
+            setSelectedCompany(response.data);
             setIsDrawerOpen(true);
         } catch (error) {
             console.error("Failed to fetch company details:", error);
@@ -193,7 +194,7 @@ const EmployerList = () => {
                                             </div>
                                             <div className="flex items-center gap-2">
                                                 <Users className="w-5 h-5 text-gray-500" />
-                                                <span>{selectedCompany.users.length || 0} user(s)</span>
+                                                <span>{1} user(s)</span>
                                             </div>
                                             <div>
                                                 <h3 className="font-semibold mb-2">Access Status</h3>

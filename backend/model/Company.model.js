@@ -30,9 +30,9 @@ const CompanySchema = new mongoose.Schema({
     required: true,
   },
   accessStatus: {
-    type: [String],
+    type: String,
     required: true,
-    default: ["PENDING"],
+    default: "PENDING",
   },
 });
 
