@@ -7,7 +7,7 @@ export const getCompany = async (req, res) => {
     if (!id) {
       companies = await Company.find({});
     } else {
-      companies = await Company.findOne(id);
+      companies = await Company.findOne({ id });
     }
     return res.json(companies);
   } catch (error) {

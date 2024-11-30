@@ -7,6 +7,7 @@ import Applications from '@/pages/JobSeeker/Applications';
 import Jobs from '@/pages/JobSeeker/Jobs';
 import Login from '@/pages/Login';
 import Signup from '@/pages/Signup';
+import EmployerList from '@/pages/Admin/EmployerList';
 import { Outlet } from 'react-router-dom';
 
 const routeConfig = [
@@ -23,7 +24,8 @@ const routeConfig = [
         allowedRoles: ['ADMIN'],
         element: <Sidebar role={"ADMIN"} />,
         children: [
-            { path: "", element: <AdminDashboard /> }
+            { path: "", element: <AdminDashboard /> },
+            { path: "employers", element: <EmployerList /> }
         ]
     },
     {

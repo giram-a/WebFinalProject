@@ -8,7 +8,7 @@ export const createCompany = async (req, res) => {
       address,
       email,
       profilePic,
-      users: [user],
+      // users: [user],
     });
     res.json({
       message:
@@ -16,6 +16,6 @@ export const createCompany = async (req, res) => {
     });
   } catch (e) {
     console.log(e);
-    res.send(500).send({ error: e.message });
+    res.status(500).send({ error: e.message });
   }
 };
