@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { NavLink, Navigate, useLocation, useNavigate } from 'react-router-dom'
-import { setUserMetaData } from '@/api/userApi'
+import { createUser, setUserMetaData } from '@/api/userApi'
 
 const Login = () => {
   const location = useLocation();
@@ -33,6 +33,9 @@ const Login = () => {
         (async () => {
           let token = await getToken();
           const res = await setUserMetaData(user.id, { role }, token);
+          const userData = { userId: user.id, firstName: user.firstName, lastName: user.lastName, emailAddress: user.emailAddresses[0].emailAddress, role: role || "JOB_SEEKER" }
+          console.log(userData);
+          await createUser(userData, token);
           if (res.status) {
             await user.reload();
             routeUser();
