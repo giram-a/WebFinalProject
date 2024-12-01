@@ -9,7 +9,6 @@ export const findCompany = async (req, res) => {
       return res.status(400).json({ error: "User ID is required." });
     }
     companies = await Company.findOne({ user: id });
-    console.log(companies);
     return res.json(companies);
   } catch (error) {
     console.log(error);
