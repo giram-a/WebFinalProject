@@ -198,17 +198,9 @@ const EmployerList = () => {
                                             </div>
                                             <div>
                                                 <h3 className="font-semibold mb-2">Access Status</h3>
-                                                {Array.isArray(selectedCompany.accessStatus) ? (
-                                                    selectedCompany.accessStatus.map((status, index) => (
-                                                        <Badge key={index} variant={status === 'PENDING' ? 'outline' : 'default'} className="mr-2">
-                                                            {status}
-                                                        </Badge>
-                                                    ))
-                                                ) : (
                                                     <Badge variant={selectedCompany.accessStatus === 'PENDING' ? 'outline' : 'default'}>
                                                         {selectedCompany.accessStatus}
                                                     </Badge>
-                                                )}
                                             </div>
                                         </div>
                                         <div className='flex gap-4 py-5'>

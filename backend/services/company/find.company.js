@@ -8,7 +8,7 @@ export const findCompany = async (req, res) => {
     if (!id) {
       return res.status(400).json({ error: "User ID is required." });
     }
-    companies = await Company.find({ user: id });
+    companies = await Company.findOne({ user: id });
     return res.json(companies);
   } catch (error) {
     console.log(error);
