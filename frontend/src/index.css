@@ -84,3 +84,12 @@
 .cl-internal-y44tp9, .cl-internal-1t1d062{
   display: none;
 }
+
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hidden {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
