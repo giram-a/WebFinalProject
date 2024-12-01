@@ -1,16 +1,35 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { UserButton } from '@clerk/clerk-react';
+import { useAuth, UserButton, useUser } from '@clerk/clerk-react';
 import { Button } from "@/components/ui/button"
 import { Crown } from 'lucide-react';
 import logo from '../../assets/logo.png';
+import {getUser} from '../../api/userApi'
 
 const Navbar = () => {
+    const {user} = useUser();
+    const {getToken} = useAuth();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const[isPremium, setIsPremium] = useState(false);
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
     };
+
+    const fetchUserData = async () => {
+        try{
+            const response = await getUser(user.id, await getToken());
+            setIsPremium(response.data.isPremiumUser);
+        }catch(error){
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        fetchUserData();
+    }, []);
+
+    
 
     return (
         <div>
@@ -36,7 +55,7 @@ const Navbar = () => {
                         <li className="hover:text-foreground">
                             <NavLink className={({ isActive }) => isActive ? 'text-black' : ''} to={'/jobseeker/applications'}>Applications</NavLink>
                         </li>
-                        <li>
+                        {isPremium || <li>
                             <Button 
                                 variant="outline" 
                                 size="sm"
@@ -46,7 +65,7 @@ const Navbar = () => {
                                  Buy Premium</NavLink>
                                 
                             </Button>
-                        </li>
+                        </li>}
                         <li>
                             <UserButton />
                         </li>
@@ -62,7 +81,7 @@ const Navbar = () => {
                         <li className="hover:text-foreground">
                             <NavLink className={({ isActive }) => isActive ? 'text-black' : ''} to={'/jobseeker/applications'}>Applications</NavLink>
                         </li>
-                        <li>
+                        {isPremium || <li>
                             <Button 
                                 variant="outline" 
                                 size="sm"
@@ -72,7 +91,7 @@ const Navbar = () => {
                                  Buy Premium</NavLink>
                                 
                             </Button>
-                        </li>
+                        </li>}
                         <li>
                             <UserButton />
                         </li>

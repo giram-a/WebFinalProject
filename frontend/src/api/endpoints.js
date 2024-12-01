@@ -8,4 +8,5 @@ export const API_ENDPOINTS = {
   FINDCOMPANY: "/company/find",
   CREATECOMPANY: "/company/create",
   UPDATEUSER: "/user/update",
+  GETUSER: "/user/find",
 };

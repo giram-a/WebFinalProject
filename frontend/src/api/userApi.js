@@ -49,3 +49,17 @@ export const updateUser = async (data, token) => {
     return { status: false, data: error };
   }
 };
+
+export const getUser = async (id, token) => {
+  try {
+    const response = await apiClient.get(`${API_ENDPOINTS.GETUSER}/?id=${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return { status: true, data: response.data };
+  } catch (error) {
+    console.log("Error updating user");
+    return { status: false, data: error };
+  }
+};
