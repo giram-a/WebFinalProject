@@ -12,6 +12,8 @@ import { Outlet } from 'react-router-dom';
 import PremiumComponent from '@/pages/JobSeeker/PremiumComponent';
 import CheckoutForm from '@/pages/JobSeeker/CheckoutForm';
 import ReturnComponent from '@/pages/JobSeeker/ReturnComponent';
+import Gemini from '@/pages/JobSeeker/Gemini';
+
 const routeConfig = [
     {
         path: "/",
@@ -46,9 +48,9 @@ const routeConfig = [
         children: [
             { path: "", element: <Jobs /> },
             { path: "applications", element: <Applications /> },
-            {path: "premium", element: <PremiumComponent/>},
-            {path: "checkout", element: <CheckoutForm/>},
-            {path: "return", element: <ReturnComponent/>}
+            { path: "premium", element: <PremiumComponent /> },
+            { path: "checkout", element: <CheckoutForm /> },
+            { path: "return", element: <ReturnComponent /> }
         ]
     }
 ]
