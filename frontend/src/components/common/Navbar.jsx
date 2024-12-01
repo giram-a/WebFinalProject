@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import logo from '../../assets/logo.png';
 import { NavLink } from 'react-router-dom';
-import { LogOut } from 'lucide-react';
 import { UserButton } from '@clerk/clerk-react';
+import { Button } from "@/components/ui/button"
+import { Crown } from 'lucide-react';
+import logo from '../../assets/logo.png';
 
 const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -36,6 +37,17 @@ const Navbar = () => {
                             <NavLink className={({ isActive }) => isActive ? 'text-black' : ''} to={'/jobseeker/applications'}>Applications</NavLink>
                         </li>
                         <li>
+                            <Button 
+                                variant="outline" 
+                                size="sm"
+                                className="border-2 border-yellow-400 text-yellow-600 hover:bg-yellow-50 hover:text-yellow-700 transition-colors duration-300"
+                            >
+                                 <NavLink className={({ isActive }) => isActive ? 'text-black' : ''} to={'/jobseeker/premium'}><Crown className="w-4 h-4 mr-2" />
+                                 Buy Premium</NavLink>
+                                
+                            </Button>
+                        </li>
+                        <li>
                             <UserButton />
                         </li>
                     </ul>
@@ -51,6 +63,17 @@ const Navbar = () => {
                             <NavLink className={({ isActive }) => isActive ? 'text-black' : ''} to={'/jobseeker/applications'}>Applications</NavLink>
                         </li>
                         <li>
+                            <Button 
+                                variant="outline" 
+                                size="sm"
+                                className="border-2 border-yellow-400 text-yellow-600 hover:bg-yellow-50 hover:text-yellow-700 transition-colors duration-300"
+                            >
+                                 <NavLink className={({ isActive }) => isActive ? 'text-black' : ''} to={'/jobseeker/premium'}><Crown className="w-4 h-4 mr-2" />
+                                 Buy Premium</NavLink>
+                                
+                            </Button>
+                        </li>
+                        <li>
                             <UserButton />
                         </li>
                     </ul>
@@ -61,3 +84,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+

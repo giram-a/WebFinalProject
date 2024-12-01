@@ -5,8 +5,9 @@ import { database } from "./database/database.js";
 import CompanyRouter from "./routes/Company.router.js";
 import jobRoute from "./routes/jobs.route.js";
 import AddUserMetaData from "./routes/auth.route.js";
-import UserRoute from './routes/user.route.js'
-import { clerkMiddleware, verifyToken } from '@clerk/express'
+import UserRoute from "./routes/user.route.js";
+import { clerkMiddleware, verifyToken } from "@clerk/express";
+import paymentRouter from "./routes/payment.route.js";
 dotenv.config();
 
 const app = express();
@@ -22,27 +23,29 @@ async function verifySessionToken(token) {
     });
     return verifiedToken;
   } catch (error) {
-    console.error('Token verification failed:', error);
+    console.error("Token verification failed:", error);
     return null;
   }
 }
 
 async function authMiddleware(req, res, next) {
   // add any route in if, to ignore this middleware for that route
-  // if (req.path === '/login') {
-  //   return next();
-  // }
-
-  const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ error: 'Authorization header missing or malformed' });
+  if (req.path === "/payment/create-checkout-session") {
+    return next();
   }
 
-  const token = authHeader.split(' ')[1];
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res
+      .status(401)
+      .json({ error: "Authorization header missing or malformed" });
+  }
+
+  const token = authHeader.split(" ")[1];
   const verifiedToken = await verifySessionToken(token);
 
   if (!verifiedToken) {
-    return res.status(401).json({ error: 'Invalid or expired token' });
+    return res.status(401).json({ error: "Invalid or expired token" });
   }
 
   req.user = verifiedToken;
@@ -53,8 +56,9 @@ app.use(authMiddleware);
 
 app.use("/company", CompanyRouter);
 app.use("/addUserMetadata", AddUserMetaData);
-app.use("/job", jobRoute)
-app.use("/user", UserRoute)
+app.use("/job", jobRoute);
+app.use("/user", UserRoute);
+app.use("/payment", paymentRouter);
 
 app.listen(process.env.PORT, () => {
   database.connectToDb();

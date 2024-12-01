@@ -9,7 +9,8 @@ import Login from '@/pages/Login';
 import Signup from '@/pages/Signup';
 import EmployerList from '@/pages/Admin/EmployerList';
 import { Outlet } from 'react-router-dom';
-
+import PremiumComponent from '@/pages/JobSeeker/PremiumComponent';
+import CheckoutForm from '@/pages/JobSeeker/CheckoutForm';
 const routeConfig = [
     {
         path: "/",
@@ -43,7 +44,9 @@ const routeConfig = [
         element: <><Navbar /><Outlet /></>,
         children: [
             { path: "", element: <Jobs /> },
-            { path: "applications", element: <Applications /> }
+            { path: "applications", element: <Applications /> },
+            {path: "premium", element: <PremiumComponent/>},
+            {path: "checkout", element: <CheckoutForm/>}
         ]
     }
 ]
