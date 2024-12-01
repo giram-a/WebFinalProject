@@ -12,7 +12,7 @@ import { Outlet } from 'react-router-dom';
 import PremiumComponent from '@/pages/JobSeeker/PremiumComponent';
 import CheckoutForm from '@/pages/JobSeeker/CheckoutForm';
 import ReturnComponent from '@/pages/JobSeeker/ReturnComponent';
-import Gemini from '@/pages/JobSeeker/Gemini';
+import JobsList from '@/pages/Employer/JobsList';
 
 const routeConfig = [
     {
@@ -38,7 +38,8 @@ const routeConfig = [
         element: <Sidebar role={"EMPLOYER"} />,
         children: [
             { path: "", element: <EmployerDashboard /> },
-            { path: "add-job", element: <AddJob /> }
+            { path: "add-job", element: <AddJob /> },
+            { path: "jobs", element: <JobsList /> },
         ]
     },
     {

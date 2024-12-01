@@ -1,4 +1,4 @@
-import { PlusSquare, LayoutDashboard,Group } from "lucide-react"
+import { PlusSquare, LayoutDashboard,Group, ListIcon } from "lucide-react"
 import {
     Sidebar,
     SidebarContent,
@@ -24,7 +24,13 @@ export function AppSidebar({ role }) {
                 title: "Add Job",
                 url: "/employer/add-job",
                 icon: PlusSquare,
-            }
+            },
+            {
+                title: "List jobs",
+                url: "/employer/jobs",
+                icon: ListIcon,
+            },
+            
         )
     } else if (role === "ADMIN") {
         items.push(
