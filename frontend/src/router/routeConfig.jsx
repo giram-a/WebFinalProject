@@ -50,8 +50,7 @@ const routeConfig = [
             { path: "applications", element: <Applications /> },
             { path: "premium", element: <PremiumComponent /> },
             { path: "checkout", element: <CheckoutForm /> },
-            { path: "return", element: <ReturnComponent /> },
-            { path: "gemini", element: <Gemini /> }
+            { path: "return", element: <ReturnComponent /> }
         ]
     }
 ]

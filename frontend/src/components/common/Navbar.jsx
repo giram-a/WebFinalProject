@@ -42,9 +42,6 @@ const Navbar = () => {
                                 Buy Premium
                             </NavLink>
                         </li>
-                        <li className="hover:text-foreground">
-                            <NavLink className={({ isActive }) => isActive ? 'text-black' : ''} to={'/jobseeker/gemini'}>Gemini</NavLink>
-                        </li>
                         <li>
                             <UserButton />
                         </li>
