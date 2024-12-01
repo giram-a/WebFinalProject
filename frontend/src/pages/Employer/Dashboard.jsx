@@ -37,7 +37,7 @@ const Dashboard = () => {
     try {
       let token = await getToken();
       const res = await findCompany(user.id, token);
-      if (res.data.length === 0) {
+      if (!res.data) {
         setIsDialogOpen(true);
       }
     } catch (error) {
@@ -90,8 +90,7 @@ const Dashboard = () => {
 
   return (
 
-    <div className='flex flex-col items-center justify-center min-h-screen bg-gray-100'>
-      <h1 className="text-3xl font-bold mb-4">Employer Dashboard</h1>
+    <div className='flex flex-col items-center justify-center min-h-screen'>
       <Toaster/>
       <Dialog open={isDialogOpen} onOpenChange={() => {}}>
         <DialogContent className="sm:max-w-[425px]">
