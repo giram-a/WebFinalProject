@@ -17,6 +17,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "@/hooks/use-toast";
 import { Drawer } from 'vaul';
+import { Toaster } from '@/components/ui/toaster';
 
 const EmployerList = () => {
     const { getToken } = useAuth();
@@ -114,6 +115,7 @@ const EmployerList = () => {
     return (
 
         <Card className="w-full max-w-4xl mx-auto mt-8">
+            <Toaster/>
             <CardHeader>
                 <CardTitle>Companies List</CardTitle>
             </CardHeader>

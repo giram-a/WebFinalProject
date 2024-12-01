@@ -34,6 +34,9 @@ const CompanySchema = new mongoose.Schema({
     required: true,
     default: "PENDING",
   },
+  jobs: {
+    type: [String],
+  },
 });
 
 const Company = mongoose.model("Company", CompanySchema);

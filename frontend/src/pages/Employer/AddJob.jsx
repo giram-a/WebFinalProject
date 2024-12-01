@@ -23,6 +23,7 @@ const AddJob = () => {
   const { user, isLoaded } = useUser();
   const { signOut } = useClerk();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [companyName,setCompanyName] = useState('');
 
   const initialFormState = {
     companyName: "",
@@ -52,6 +53,7 @@ const AddJob = () => {
       if (res.data.accessStatus === "PENDING") {
         setIsDialogOpen(true);
       }
+      setCompanyName(res.data.name);
     } catch (error) {
       console.error("Error fetching company data:", error);
       toast({
@@ -73,7 +75,7 @@ const AddJob = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     let token = await getToken();
-    const res = await createJob(formData, token)
+    const res = await createJob({...formData,companyName}, token)
     console.log("job creation res", res);
     if(res.status){
       toast({
@@ -108,8 +110,8 @@ const AddJob = () => {
                 <Label htmlFor="companyName">Company Name *</Label>
                 <Input id="companyName"
                   placeholder="Enter company name"
-                  value={formData.companyName}
-                  onChange={handleInputChange} required />
+                  value={companyName}
+                   disabled/>
               </div>
               <div className="space-y-2 w-full">
                 <Label htmlFor="jobTitle">Job Title *</Label>

@@ -7,4 +7,6 @@ export const API_ENDPOINTS = {
   UPDATECOMPANY: "/company/update",
   FINDCOMPANY: "/company/find",
   CREATECOMPANY: "/company/create",
+  UPDATEUSER: "/user/update",
+  GETUSER: "/user/find",
 };
