@@ -11,6 +11,7 @@ import EmployerList from '@/pages/Admin/EmployerList';
 import { Outlet } from 'react-router-dom';
 import PremiumComponent from '@/pages/JobSeeker/PremiumComponent';
 import CheckoutForm from '@/pages/JobSeeker/CheckoutForm';
+import ReturnComponent from '@/pages/JobSeeker/ReturnComponent';
 const routeConfig = [
     {
         path: "/",
@@ -46,7 +47,8 @@ const routeConfig = [
             { path: "", element: <Jobs /> },
             { path: "applications", element: <Applications /> },
             {path: "premium", element: <PremiumComponent/>},
-            {path: "checkout", element: <CheckoutForm/>}
+            {path: "checkout", element: <CheckoutForm/>},
+            {path: "return", element: <ReturnComponent/>}
         ]
     }
 ]

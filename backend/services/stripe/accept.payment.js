@@ -3,7 +3,7 @@ import Stripe from "stripe";
 import dotenv from "dotenv";
 dotenv.config();
 
-let YOUR_DOMAIN = "http://localhost:3000";
+let YOUR_DOMAIN = "http://localhost:5173";
 
 let stripe = Stripe(process.env.STRIPE_SK);
 
@@ -18,7 +18,7 @@ const acceptPayment = async (req, res) => {
       },
     ],
     mode: "payment",
-    return_url: `${YOUR_DOMAIN}/return?session_id={CHECKOUT_SESSION_ID}`,
+    return_url: `${YOUR_DOMAIN}/jobseeker/return?session_id={CHECKOUT_SESSION_ID}`,
   });
 
   res.send({ clientSecret: session.client_secret });

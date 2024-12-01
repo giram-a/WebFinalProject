@@ -30,7 +30,10 @@ async function verifySessionToken(token) {
 
 async function authMiddleware(req, res, next) {
   // add any route in if, to ignore this middleware for that route
-  if (req.path === "/payment/create-checkout-session") {
+  if (
+    req.path === "/payment/create-checkout-session" ||
+    req.path === "/payment/session-status"
+  ) {
     return next();
   }
 
