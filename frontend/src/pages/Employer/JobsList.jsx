@@ -17,7 +17,8 @@ import { toast } from "@/hooks/use-toast";
 import { Drawer } from 'vaul';
 import { Toaster } from '@/components/ui/toaster';
 import { useAuth, useUser } from '@clerk/clerk-react';
-import { getAllJobs, getJobsByCompany,updateJob } from '@/api/jobsApi';
+import { getJobsByCompany,updateJobVisibility } from '@/api/jobsApi';
+import { useNavigate } from 'react-router-dom';
 
 const JobsList = ()=>{
     const {getToken} = useAuth(); 
@@ -26,8 +27,9 @@ const JobsList = ()=>{
     const [loading, setLoading] = useState(true);
     const [selectedJobId, setSelectedJobId] = useState(null);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-
+    const navigate = useNavigate();
     useEffect(() => {
+        
 
         if(isLoaded && user){
             fetchJobs();
@@ -59,7 +61,7 @@ const JobsList = ()=>{
     };
     const handleJobUpdate =async (status)=>{
         try{
-        const response = await updateJob(selectedJobId._id,status, await getToken());
+        const response = await updateJobVisibility(selectedJobId._id,status, await getToken());
         if (!response.status) {
             throw new Error("Failed to hide job");
         }
@@ -76,9 +78,9 @@ const JobsList = ()=>{
             variant: "destructive",
         });
     }
-};
+    };
     const handleEdit = ()=>{
-
+        navigate(`/employer/editjob?id=${selectedJobId._id}`);
     }
     return (
         <Card className="w-full max-w-4xl mx-auto mt-8">
@@ -171,7 +173,7 @@ const JobsList = ()=>{
                                         <div className='flex gap-4 py-5'>
                                             {selectedJobId.publishStatus==="PUBLISHED" ? <Button onClick={()=> {handleJobUpdate("HIDDEN")}} variant="destructive">Hide</Button>:
                                             <Button onClick={()=>{handleJobUpdate("PUBLISHED")}}>Publish</Button>}
-                                            <Button onClick={handleEdit}>Edit</Button>  
+                                            {selectedJobId.publishStatus==="HIDDEN" &&<Button onClick={handleEdit}>Edit</Button>}  
                                         </div>
                                     </div>
                                 )}

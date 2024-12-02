@@ -13,6 +13,7 @@ import PremiumComponent from '@/pages/JobSeeker/PremiumComponent';
 import CheckoutForm from '@/pages/JobSeeker/CheckoutForm';
 import ReturnComponent from '@/pages/JobSeeker/ReturnComponent';
 import JobsList from '@/pages/Employer/JobsList';
+import EditJob from '@/pages/Employer/EditJob';
 
 const routeConfig = [
     {
@@ -40,6 +41,7 @@ const routeConfig = [
             { path: "", element: <EmployerDashboard /> },
             { path: "add-job", element: <AddJob /> },
             { path: "jobs", element: <JobsList /> },
+            { path: "editjob", element: <EditJob/> },
         ]
     },
     {

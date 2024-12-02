@@ -46,7 +46,7 @@ export const getJobsByCompany = async (id, token) => {
   }
 };
 
-export const updateJob = async (id, status, token) => {
+export const updateJobVisibility = async (id, status, token) => {
   try {
     const response = await apiClient.put(
       `${API_ENDPOINTS.UPDATEJOB}/`,
@@ -63,6 +63,44 @@ export const updateJob = async (id, status, token) => {
     return { status: true, data: response.data };
   } catch (error) {
     console.log("Error updating job");
+    return { status: false, data: error };
+  }
+};
+
+export const getJobById = async (id, token) => {
+  try {
+    const response = await apiClient.get(
+      `${API_ENDPOINTS.GETALLJOBS}?id=${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return { status: true, data: response.data };
+  } catch (error) {
+    console.log("Error updating job");
+    return { status: false, data: error };
+  }
+};
+
+export const updateJob = async (jobData, id, token) => {
+  try {
+    const response = await apiClient.put(
+      API_ENDPOINTS.UPDATEJOB,
+      {
+        ...jobData,
+        id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return { status: true, data: response.data };
+  } catch (error) {
+    console.log("Error creating job");
     return { status: false, data: error };
   }
 };
