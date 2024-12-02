@@ -1,3 +1,4 @@
+import { Job } from "../../model/Jobs.model.js";
 export const updateJob = async (req, res) => {
   try {
     const { id, publishStatus } = req.body;

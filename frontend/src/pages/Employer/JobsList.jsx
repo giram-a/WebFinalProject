@@ -9,7 +9,7 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2, MapPin, Mail, Users, CircleXIcon } from 'lucide-react';
+import { Loader2, MapPin, Users, CircleXIcon } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -17,7 +17,7 @@ import { toast } from "@/hooks/use-toast";
 import { Drawer } from 'vaul';
 import { Toaster } from '@/components/ui/toaster';
 import { useAuth, useUser } from '@clerk/clerk-react';
-import { getJobsByCompany } from '@/api/jobsApi';
+import { getAllJobs, getJobsByCompany,updateJob } from '@/api/jobsApi';
 
 const JobsList = ()=>{
     const {getToken} = useAuth(); 
@@ -44,12 +44,9 @@ const JobsList = ()=>{
             setLoading(false);
         }
     };
-    const handleRowClick = async (companyId) => {
+    const handleRowClick = async (jobId) => {
         try {
-            // const response = await getCompanyById(companyId, await getToken());
-            // console.log(response.data)
-            console.log(jobs,companyId)
-            setSelectedJobId(jobs[companyId]);
+            setSelectedJobId(jobs[jobId]);
             setIsDrawerOpen(true);
         } catch (error) {
             console.error("Failed to fetch company details:", error);
@@ -60,14 +57,28 @@ const JobsList = ()=>{
             });
         }
     };
-    const handleDeny = ()=>{
-
+    const handleJobUpdate =async (status)=>{
+        try{
+        const response = await updateJob(selectedJobId._id,status, await getToken());
+        if (!response.status) {
+            throw new Error("Failed to hide job");
+        }
+        setIsDrawerOpen(false);
+        // Refresh the companies list
+        const updatedCompanies = await getJobsByCompany(user.id,await getToken());
+        console.log(updatedCompanies);
+        setJobs(updatedCompanies.data);
+    } catch (error) {
+        console.error("Failed to hide job:", error);
+        toast({
+            title: "Error",
+            description: "Failed to deny company. Please try again.",
+            variant: "destructive",
+        });
     }
-    const handleApprove = ()=>{
-        
-    }
+};
     const handleEdit = ()=>{
-        
+
     }
     return (
         <Card className="w-full max-w-4xl mx-auto mt-8">
@@ -158,8 +169,8 @@ const JobsList = ()=>{
                                             </div>
                                         </div>
                                         <div className='flex gap-4 py-5'>
-                                            {selectedJobId.publishStatus==="PUBLISHED" ? <Button onClick={handleDeny} variant="destructive">Hide</Button>:
-                                            <Button onClick={handleApprove}>Publish</Button>}
+                                            {selectedJobId.publishStatus==="PUBLISHED" ? <Button onClick={()=> {handleJobUpdate("HIDDEN")}} variant="destructive">Hide</Button>:
+                                            <Button onClick={()=>{handleJobUpdate("PUBLISHED")}}>Publish</Button>}
                                             <Button onClick={handleEdit}>Edit</Button>  
                                         </div>
                                     </div>

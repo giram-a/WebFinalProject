@@ -10,4 +10,5 @@ export const API_ENDPOINTS = {
   UPDATEUSER: "/user/update",
   GETUSER: "/user/find",
   GETJOBSBYCOMPANY: "/job/find",
+  UPDATEJOB: "/job/update",
 };

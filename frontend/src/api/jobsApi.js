@@ -45,3 +45,24 @@ export const getJobsByCompany = async (id, token) => {
     return { status: false, data: error };
   }
 };
+
+export const updateJob = async (id, status, token) => {
+  try {
+    const response = await apiClient.put(
+      `${API_ENDPOINTS.UPDATEJOB}/`,
+      {
+        id,
+        publishStatus: status,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return { status: true, data: response.data };
+  } catch (error) {
+    console.log("Error updating job");
+    return { status: false, data: error };
+  }
+};
