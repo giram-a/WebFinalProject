@@ -14,6 +14,7 @@ import CheckoutForm from '@/pages/JobSeeker/CheckoutForm';
 import ReturnComponent from '@/pages/JobSeeker/ReturnComponent';
 import JobsList from '@/pages/Employer/JobsList';
 import EditJob from '@/pages/Employer/EditJob';
+import Resume from '@/pages/JobSeeker/Resume';
 
 const routeConfig = [
     {
@@ -53,7 +54,8 @@ const routeConfig = [
             { path: "applications", element: <Applications /> },
             { path: "premium", element: <PremiumComponent /> },
             { path: "checkout", element: <CheckoutForm /> },
-            { path: "return", element: <ReturnComponent /> }
+            { path: "return", element: <ReturnComponent /> },
+            { path: "resume", element: <Resume /> }
         ]
     }
 ]

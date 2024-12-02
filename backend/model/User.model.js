@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema({
     profilePicture: String,
     role: String,
     isPremiumUser: Boolean,
+    resumeLink: String,
     appliedJob: []
 }, { timestamps: true });
 

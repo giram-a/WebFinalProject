@@ -35,6 +35,9 @@ const Navbar = () => {
                         <li className="hover:text-foreground">
                             <NavLink className={({ isActive }) => isActive ? 'text-black' : ''} to={'/jobseeker/applications'}>Applications</NavLink>
                         </li>
+                        <li className="hover:text-foreground">
+                            <NavLink className={({ isActive }) => isActive ? 'text-black' : ''} to={'/jobseeker/resume'}>Resume</NavLink>
+                        </li>
                         <li>
                             <NavLink className="flex justify-between items-center border-2 border-yellow-400 text-yellow-600 hover:bg-yellow-50 hover:text-yellow-700 transition-colors duration-300 px-2 rounded-lg py-1" to={'/jobseeker/premium'}>
                                 <Crown className="w-4 h-4 mr-2" />
@@ -55,6 +58,9 @@ const Navbar = () => {
                         </li>
                         <li className="hover:text-foreground">
                             <NavLink className={({ isActive }) => isActive ? 'text-black' : ''} to={'/jobseeker/applications'}>Applications</NavLink>
+                        </li>
+                        <li className="hover:text-foreground">
+                            <NavLink className={({ isActive }) => isActive ? 'text-black' : ''} to={'/jobseeker/resume'}>Resume</NavLink>
                         </li>
                         <li>
                             <NavLink className="flex justify-between items-center border-2 border-yellow-400 text-yellow-600 hover:bg-yellow-50 hover:text-yellow-700 transition-colors duration-300 px-2 rounded-lg py-1" to={'/jobseeker/premium'}>

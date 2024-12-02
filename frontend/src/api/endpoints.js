@@ -11,4 +11,5 @@ export const API_ENDPOINTS = {
   GETUSER: "/user/find",
   GETJOBSBYCOMPANY: "/job/find",
   UPDATEJOB: "/job/update",
+  GETPRESIGNEDURL: "/user/s3-presigned-url"
 };

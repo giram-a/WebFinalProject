@@ -186,7 +186,7 @@ Meal Share (https://github.com/giram-a/AED/tree/main/MealShare) Nov 2023 - Dec 2
 
   return (
     <div className="flex flex-col md:flex-row h-screen">
-      <div className="md:w-[25%] p-4 border m-4 rounded-md md:fixed h-[90%] md:h-[89%] xs:h-56 overflow-x-auto md:overflow-auto flex md:flex-col space-x-4 md:space-x-0 md:space-y-4 scrollbar-hidden">
+      <div className="md:w-[25%] p-4 border m-4 rounded-md md:fixed h-[90%] md:h-[89%] xs:h-fit overflow-x-auto md:overflow-auto flex md:flex-col space-x-4 md:space-x-0 md:space-y-4 scrollbar-hidden">
         <div className="flex flex-nowrap md:flex-col space-x-4 md:space-x-0 md:space-y-4">
           {
             jobs.length > 0 ?
