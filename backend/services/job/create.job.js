@@ -26,6 +26,7 @@ export const createJob = async (req, res) => {
       location: location || null,
       skills: skills || null,
       applyLink: applyLink || null,
+      publishStatus: "PUBLISHED",
     });
 
     await newJob.save();

@@ -66,6 +66,9 @@ const JobsList = ()=>{
     const handleApprove = ()=>{
         
     }
+    const handleEdit = ()=>{
+        
+    }
     return (
         <Card className="w-full max-w-4xl mx-auto mt-8">
             <Toaster/>
@@ -84,7 +87,8 @@ const JobsList = ()=>{
                             <TableRow>
                                 <TableHead>Company Name</TableHead>
                                 <TableHead>Job Title</TableHead>
-                                <TableHead className="text-right">Salary</TableHead>
+                                <TableHead >Salary</TableHead>
+                                <TableHead className="text-right">Publish status</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -97,7 +101,8 @@ const JobsList = ()=>{
                                     >
                                         <TableCell className="font-medium">{job.companyName}</TableCell>
                                         <TableCell>{job.jobTitle}</TableCell>
-                                        <TableCell className="text-right">{job.salary}</TableCell>
+                                        <TableCell>{job.salary}</TableCell>
+                                        <TableCell className={`text-right ${job.publishStatus === 'PUBLISHED' ? 'text-green-500' : 'text-red-500'}`} >{job.publishStatus}</TableCell>
                                     </TableRow>
                                 ))
                             ) : (
@@ -155,6 +160,7 @@ const JobsList = ()=>{
                                         <div className='flex gap-4 py-5'>
                                             {selectedJobId.publishStatus==="PUBLISHED" ? <Button onClick={handleDeny} variant="destructive">Hide</Button>:
                                             <Button onClick={handleApprove}>Publish</Button>}
+                                            <Button onClick={handleEdit}>Edit</Button>  
                                         </div>
                                     </div>
                                 )}
