@@ -23,7 +23,6 @@ const Dashboard = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [companyName, setCompanyName] = useState('');
   const [companyAddress, setCompanyAddress] = useState('');
-  const [companyEmail, setCompanyEmail] = useState('');
   const [companyProfilePic, setCompanyProfilePic] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -31,7 +30,7 @@ const Dashboard = () => {
     if (isLoaded && user) {
       fetchDataForCompany();
     }
-  }, [isLoaded, user]);
+  }, []);
 
   const fetchDataForCompany = async () => {
     try {

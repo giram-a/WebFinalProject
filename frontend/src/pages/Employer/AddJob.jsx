@@ -184,7 +184,7 @@ const AddJob = () => {
           <DialogHeader>
             <DialogTitle>Approval Required</DialogTitle>
             <DialogDescription>
-              Your company's access status is pending. Please contact the admin for approval. You will be logged out from here.
+              Your company&apos;s access status is pending. Please contact the admin for approval. You will be logged out from here.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { UserButton } from '@clerk/clerk-react';
-import { Button } from "@/components/ui/button"
 import { Crown } from 'lucide-react';
 import logo from '../../assets/logo.png';
 
