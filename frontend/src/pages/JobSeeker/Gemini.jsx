@@ -2,12 +2,14 @@ import React, { useState } from 'react'
 import * as pdfjsLib from "pdfjs-dist";
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { getPrompt, getSystemPrompt } from '@/lib/prompt';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/build/pdf.worker.min.mjs', import.meta.url).toString();
 
 // pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.8.69/pdf.worker.mjs"
 
-const Gemini = () => {
+const Gemini = ({ activeJob }) => {
   const [status, setStatus] = useState("");
   const [op, setOp] = useState(null)
 
@@ -47,10 +49,7 @@ const Gemini = () => {
 
   const geminiHandler = async (resumeText) => {
 
-    let jobDescription = "TechCorp is seeking a talented and driven Software Engineer to join our dynamic team in San Francisco. As a Software Engineer, you will play a pivotal role in designing, developing, and maintaining cutting-edge software solutions. Your expertise in React, Node.js, and MongoDB will contribute to building scalable, user-friendly applications that solve real-world problems. You will collaborate with cross-functional teams, including designers, product managers, and fellow developers, to ensure high-quality software delivery. Responsibilities include writing clean, efficient code, troubleshooting and debugging issues, and implementing best practices for security and performance. At TechCorp, we value creativity, innovation, and a commitment to continuous learning. This role offers the opportunity to work on impactful projects in a fast-paced, collaborative environment. If you're passionate about technology and eager to make a difference, we encourage you to apply. Join us and be a part of shaping the future of software development."
-
-
-    let final_prompt = getPrompt(jobDescription, resumeText);
+    let final_prompt = getPrompt(activeJob.description, resumeText);
 
     const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API);
     try {
@@ -81,40 +80,44 @@ const Gemini = () => {
     extracted['matched-skills'] = [...xml.matchAll(patterns[1])].map(match => match[1].trim());
     extracted['resume-analysis'] = [...xml.matchAll(patterns[2])].map(match => match[1].trim());
 
+    setStatus("")
     return extracted;
+
   };
 
   return (
     <div className="p-6 bg-gray-50 rounded-lg shadow-md">
-      <input type="file" accept="application/pdf" onChange={handleFileChange} />
-      {status && <p>{status}</p>}
+
       <h1 className="text-2xl font-semibold mb-4">Resume Analysis</h1>
-
-      {/* Missing Skills */}
-      <div className="mb-6">
-        <h2 className="text-xl font-medium mb-2">Missing Details / skills from Resume</h2>
-        <ul className="list-disc pl-6 text-gray-700">
-          {op && op['missing-skills'].map((skill, index) => (
-            <li key={index} className="text-lg">{skill}</li>
-          ))}
-        </ul>
+      <div className="grid w-full max-w-sm items-center gap-1.5">
+        <Label htmlFor="resume">Resume</Label>
+        <Input id="resume" type="file" accept="application/pdf" onChange={handleFileChange} />
       </div>
-
-      {/* Present Skills */}
-      <div className="mb-6">
-        <h2 className="text-xl font-medium mb-2">Details / Skills Present in the Resume</h2>
-        <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 text-gray-700">
-          {op && op['matched-skills'].map((skill, index) => (
-            <li key={index} className="text-lg bg-gray-100 p-2 rounded-lg">{skill}</li>
-          ))}
-        </ul>
-      </div>
-
-      {/* Resume Analysis */}
-      <div className="mb-6">
-        <h2 className="text-xl font-medium mb-2">Resume Analysis</h2>
-        <p className="text-gray-700">{op && op['resume-analysis'][0]}</p>
-      </div>
+      {status && <p>{status}</p>}
+      {
+        op && (<>
+          <div className="my-3">
+            <h2 className="font-medium">Summary</h2>
+            <p className="text-gray-700">{op && op['resume-analysis'][0]}</p>
+          </div>
+          <div className="my-3">
+            <h2 className="font-medium">Missing Details / skills from Resume</h2>
+            <ul className="list-disc pl-6 text-gray-700">
+              {op && op['missing-skills'].map((skill, index) => (
+                <li key={index} className="text-lg">{skill}</li>
+              ))}
+            </ul>
+          </div>
+          <div className="my-3">
+            <h2 className="font-medium">Details / Skills Present in the Resume</h2>
+            <ul className="list-disc pl-6 text-gray-700">
+              {op && op['matched-skills'].map((skill, index) => (
+                <li key={index}>{skill}</li>
+              ))}
+            </ul>
+          </div>
+        </>)
+      }
     </div>
   );
 }
