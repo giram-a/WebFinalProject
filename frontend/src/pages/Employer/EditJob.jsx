@@ -6,9 +6,8 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { useToast } from '@/hooks/use-toast.js'
 import { Toaster } from '@/components/ui/toaster'
-import { createJob } from '@/api/jobsApi'
+import { getJobById, updateJob } from '@/api/jobsApi'
 import { useAuth, useUser, useClerk } from '@clerk/clerk-react'
-import { findCompany } from '@/api/companyApi'
 import {
   Dialog,
   DialogContent,
@@ -17,13 +16,18 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
+import { useNavigate } from 'react-router-dom'
 
-const AddJob = () => {
+const EditJob = () => {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const jobId = urlParams.get('id');
+    console.log(jobId);
   const { getToken } = useAuth();
   const { user, isLoaded } = useUser();
   const { signOut } = useClerk();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [companyName,setCompanyName] = useState('');
+  const navigate = useNavigate();
 
   const initialFormState = {
     companyName: "",
@@ -49,16 +53,14 @@ const AddJob = () => {
     try {
       console.log(user)
       let token = await getToken();
-      const res = await findCompany(user.id, token);
-      if (res.data.accessStatus === "PENDING") {
-        setIsDialogOpen(true);
-      }
-      setCompanyName(res.data.name);
+      const res = await getJobById(jobId, token);
+      console.log(res.data.data);
+      setFormData(res.data.data);
     } catch (error) {
-      console.error("Error fetching company data:", error);
+      console.error("Error fetching job data:", error);
       toast({
         title: "Error",
-        description: "Failed to fetch company data. Please try again.",
+        description: "Failed to fetch job data. Please go back to old page.",
         variant: "destructive",
       });
     }
@@ -75,13 +77,9 @@ const AddJob = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     let token = await getToken();
-    const res = await createJob({...formData,companyName}, token)
-    console.log("job creation res", res);
+    const res = await updateJob({...formData},jobId, token)
     if(res.status){
-      toast({
-        description: res.data.message,
-      })
-      setFormData(initialFormState);
+        navigate("/employer/jobs");
     }else{
       toast({
         description: "Something went wrong",
@@ -110,7 +108,7 @@ const AddJob = () => {
                 <Label htmlFor="companyName">Company Name *</Label>
                 <Input id="companyName"
                   placeholder="Enter company name"
-                  value={companyName}
+                  value={formData.companyName}
                    disabled/>
               </div>
               <div className="space-y-2 w-full">
@@ -174,7 +172,7 @@ const AddJob = () => {
             </div>
           </CardContent>
           <CardFooter>
-            <Button type="submit" className="w-full">Submit Job Posting</Button>
+            <Button type="submit" className="w-full">Update Job Posting</Button>
           </CardFooter>
         </Card>
       </form>
@@ -196,5 +194,5 @@ const AddJob = () => {
   )
 }
 
-export default AddJob
+export default EditJob;
 

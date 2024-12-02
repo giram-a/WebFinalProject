@@ -7,8 +7,8 @@ import { useAuth, useUser } from "@clerk/clerk-react";
 import { updateUser } from "@/api/userApi";
 
 const ReturnComponent = () => {
-    const {user} = useUser();
-    const {getToken} = useAuth();
+  const {user} = useUser();
+  const {getToken} = useAuth();
   const [status, setStatus] = useState(null);
   const [customerEmail, setCustomerEmail] = useState('');
   const [isLoading, setIsLoading] = useState(true);

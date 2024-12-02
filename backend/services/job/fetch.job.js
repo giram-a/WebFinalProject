@@ -2,7 +2,14 @@ import { Job } from "../../model/Jobs.model.js";
 
 export const getAllJobs = async (req, res) => {
   try {
-    const jobs = await Job.find({});
+    const { id } = req.query;
+    let jobs;
+    if (id) {
+      jobs = await Job.findOne({ _id: id });
+    } else {
+      jobs = await Job.find({});
+    }
+
     if (jobs) {
       return res.status(200).json({
         status: true,
