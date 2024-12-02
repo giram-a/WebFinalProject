@@ -8,6 +8,7 @@ import AddUserMetaData from "./routes/auth.route.js";
 import UserRoute from "./routes/user.route.js";
 import { clerkMiddleware, verifyToken } from "@clerk/express";
 import paymentRouter from "./routes/payment.route.js";
+import emailRouter from "./routes/email.route.js";
 dotenv.config();
 
 const app = express();
@@ -32,7 +33,8 @@ async function authMiddleware(req, res, next) {
   // add any route in if, to ignore this middleware for that route
   if (
     req.path === "/payment/create-checkout-session" ||
-    req.path === "/payment/session-status"
+    req.path === "/payment/session-status" ||
+    req.path === "/email/send/"
   ) {
     return next();
   }
@@ -62,6 +64,7 @@ app.use("/addUserMetadata", AddUserMetaData);
 app.use("/job", jobRoute);
 app.use("/user", UserRoute);
 app.use("/payment", paymentRouter);
+app.use("/email", emailRouter);
 
 app.listen(process.env.PORT, () => {
   database.connectToDb();
