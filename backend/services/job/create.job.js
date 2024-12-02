@@ -1,4 +1,4 @@
-import { Job } from "../../model/jobs.model.js";
+import { Job } from "../../model/Jobs.model.js";
 import Company from "../../model/Company.model.js";
 
 export const createJob = async (req, res) => {
@@ -26,6 +26,7 @@ export const createJob = async (req, res) => {
       location: location || null,
       skills: skills || null,
       applyLink: applyLink || null,
+      publishStatus: "PUBLISHED",
     });
 
     await newJob.save();

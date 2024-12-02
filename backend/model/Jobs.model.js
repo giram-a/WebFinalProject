@@ -1,6 +1,7 @@
-import mongoose from 'mongoose'
+import mongoose from "mongoose";
 
-const jobSchema = new mongoose.Schema({
+const jobSchema = new mongoose.Schema(
+  {
     companyName: String,
     jobTitle: String,
     description: String,
@@ -8,6 +9,10 @@ const jobSchema = new mongoose.Schema({
     location: String,
     skills: String,
     applyLink: String,
-}, { timestamps: true });
+    applicants: [String],
+    publishStatus: String,
+  },
+  { timestamps: true }
+);
 
-export const Job = mongoose.model('job', jobSchema);
+export const Job = mongoose.model("job", jobSchema);
