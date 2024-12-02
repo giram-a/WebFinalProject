@@ -1,10 +1,10 @@
 import sgMail from "@sendgrid/mail";
-import { emailTemplates } from "./emailTemplates.js";
+import { emailTemplates } from "./emailTemplate.js";
 
 const sendMail = (req, res) => {
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-  const { type, to } = req.body; // Assume the request body contains the email type and recipient
+  const { type, to } = req.body;
 
   let template;
   if (type === "premiumPurchase") {
@@ -17,7 +17,7 @@ const sendMail = (req, res) => {
 
   const msg = {
     to: to,
-    from: process.env.SENDGRID_VERIFIED_SENDER || "noreply@futurehire.com", // Use an environment variable for the sender
+    from: process.env.SENDGRID_VERIFIED_SENDER || "noreply@futurehire.com",
     subject: template.subject,
     html: template.html,
   };
