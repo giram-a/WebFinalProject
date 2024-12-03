@@ -5,35 +5,37 @@ import { Button } from "@/components/ui/button";
 import { Loader2, CheckCircle, XCircle } from 'lucide-react';
 import { useAuth, useUser } from "@clerk/clerk-react";
 import { updateUser } from "@/api/userApi";
+import useUserStore from "@/features/user/userStore";
 
 const ReturnComponent = () => {
-  const {user} = useUser();
-  const {getToken} = useAuth();
+  const { user } = useUser();
+  const { getToken } = useAuth();
   const [status, setStatus] = useState(null);
   const [customerEmail, setCustomerEmail] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-
+  const { updateUserPremiumStatus } = useUserStore();
 
   const checkPaymentStatus = async () => {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const sessionId = urlParams.get('session_id');
-    
-  fetch(`http://localhost:8080/payment/session-status?session_id=${sessionId}`)
-    .then((res) => res.json())
-    .then(async (data) => {
-        let response = await updateUser({id: user.id, isPremiumUser: data.status === "complete"}, await getToken());
+
+    fetch(`http://localhost:8080/payment/session-status?session_id=${sessionId}`)
+      .then((res) => res.json())
+      .then(async (data) => {
+        let response = await updateUser({ id: user.id, isPremiumUser: data.status === "complete" }, await getToken());
         console.log(response);
-      setStatus(data.status);
-      setCustomerEmail(data.customer_email);
-      setIsLoading(false);
-    })
-    .catch((error) => {
-      console.error("Error fetching session status:", error);
-      setStatus('error');
-      setIsLoading(false);
-    });
-    
+        updateUserPremiumStatus(true)
+        setStatus(data.status);
+        setCustomerEmail(data.customer_email);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching session status:", error);
+        setStatus('error');
+        setIsLoading(false);
+      });
+
   }
   useEffect(() => {
     checkPaymentStatus();
@@ -116,4 +118,3 @@ const ReturnComponent = () => {
 };
 
 export default ReturnComponent;
-
