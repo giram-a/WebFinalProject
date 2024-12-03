@@ -11,13 +11,15 @@ const sendMail = (req, res) => {
     template = emailTemplates.premiumPurchase;
   } else if (type === "companyApproval") {
     template = emailTemplates.companyApproval;
+  } else if (type === "jobApplicationConfirmation") {
+    template = emailTemplates.jobApplicationConfirmation;
   } else {
     return res.status(400).send({ error: "Invalid email type" });
   }
 
   const msg = {
     to: to,
-    from: process.env.SENDGRID_VERIFIED_SENDER || "noreply@futurehire.com",
+    from: process.env.SENDGRID_VERIFIED_SENDER || "asatwe@gmail.com",
     subject: template.subject,
     html: template.html,
   };
@@ -26,7 +28,6 @@ const sendMail = (req, res) => {
     .send(msg)
     .then(() => {
       res.status(200).send({ message: "Email sent successfully" });
-      console.log("Email sent");
     })
     .catch((error) => {
       res.status(400).send({ error: error.message });

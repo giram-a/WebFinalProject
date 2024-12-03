@@ -104,3 +104,24 @@ export const updateJob = async (jobData, id, token) => {
     return { status: false, data: error };
   }
 };
+
+export const applyToJob = async (jobId, userId, token) => {
+  try {
+    const response = await apiClient.post(
+      API_ENDPOINTS.APPLYTOJOB,
+      {
+        _id: jobId,
+        userId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return { status: true, data: response.data };
+  } catch (error) {
+    console.log("Error applying to job");
+    return { status: false, data: error };
+  }
+};

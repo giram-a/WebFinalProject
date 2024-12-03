@@ -10,7 +10,7 @@ const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 const CheckoutForm = () => {
   const fetchClientSecret = useCallback(async () => {
     // Create a Checkout Session
-    const res = await fetch("http://localhost:8080/payment/create-checkout-session", {
+    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/payment/create-checkout-session`, {
       method: "POST",
     });
     const data = await res.json();
@@ -28,4 +28,4 @@ const CheckoutForm = () => {
   );
 };
 
-export default CheckoutForm;;
+export default CheckoutForm;

@@ -18,6 +18,7 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "@/hooks/use-toast";
 import { Drawer } from 'vaul';
 import { Toaster } from '@/components/ui/toaster';
+import { sendEmail } from '@/api/emailApi';
 
 const EmployerList = () => {
     const { getToken } = useAuth();
@@ -72,8 +73,9 @@ const EmployerList = () => {
                 title: "Success",
                 description: "Company has been approved.",
             });
+            const emailRes = await sendEmail("companyApproval",selectedCompany.email, await getToken());
+            console.log("email",emailRes);
             setIsDrawerOpen(false);
-            // Refresh the companies list
             const updatedCompanies = await getAllCompanies(await getToken());
             console.log(updatedCompanies);
             setCompanies(updatedCompanies.data);
@@ -111,6 +113,9 @@ const EmployerList = () => {
             });
         }
     };
+    const handleBlockCompany = ()=>{
+        console.log("block")
+    }
 
     return (
 
@@ -206,9 +211,15 @@ const EmployerList = () => {
                                             </div>
                                         </div>
                                         <div className='flex gap-4 py-5'>
-                                            <Button onClick={handleDeny} variant="destructive">Deny</Button>
-                                            <Button onClick={handleApprove}>Approve</Button>
-                                        </div>
+            {selectedCompany.accessStatus === 'PENDING' ? (
+              <>
+                <Button onClick={handleDeny} variant="destructive">Deny</Button>
+                <Button onClick={handleApprove}>Approve</Button>
+              </>
+            ) : (
+              <Button onClick={handleBlockCompany} variant="destructive">Block Company</Button>
+            )}
+          </div>
                                     </div>
                                 )}
                             </div>
