@@ -9,7 +9,6 @@ export const getCompany = async (req, res) => {
     } else {
       companies = await Company.findOne({ _id: id });
     }
-    console.log(companies);
     return res.json(companies);
   } catch (error) {
     console.log(error);

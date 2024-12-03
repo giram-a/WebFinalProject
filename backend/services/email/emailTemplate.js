@@ -92,4 +92,3 @@ export const emailTemplates = {
 };
 
 // For demonstration purposes, let's log the keys of the emailTemplates object
-console.log("Available email templates:", Object.keys(emailTemplates));
