@@ -4,8 +4,9 @@ import { User } from "../../model/User.model.js";
 export const applyJob = async (req, res) => {
   try {
     const { id, userId } = req.body;
-    const job = await Job.findById(id);
-    const user = await User.findById(userId);
+    const job = await Job.findOne({ _id: id });
+    const user = await User.findOne({ userId });
+    console.log(job);
     job.applicants.push(userId);
     await job.save();
     user.appliedJob.push({
@@ -22,6 +23,6 @@ export const applyJob = async (req, res) => {
     });
   } catch (e) {
     console.log(e);
-    res.send(500).send({ error: e.message });
+    res.send({ status: 500, error: e.message });
   }
 };
