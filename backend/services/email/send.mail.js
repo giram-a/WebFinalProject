@@ -2,6 +2,8 @@ import sgMail from "@sendgrid/mail";
 import { emailTemplates } from "./emailTemplate.js";
 
 const sendMail = (req, res) => {
+  console.log(req.body);
+  console.log(req.body);
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
   const { type, to } = req.body;
@@ -17,7 +19,7 @@ const sendMail = (req, res) => {
 
   const msg = {
     to: to,
-    from: process.env.SENDGRID_VERIFIED_SENDER || "noreply@futurehire.com",
+    from: process.env.SENDGRID_VERIFIED_SENDER || "asatwe@gmail.com",
     subject: template.subject,
     html: template.html,
   };
@@ -26,7 +28,7 @@ const sendMail = (req, res) => {
     .send(msg)
     .then(() => {
       res.status(200).send({ message: "Email sent successfully" });
-      console.log("Email sent");
+      console.log("Email sent", msg);
     })
     .catch((error) => {
       res.status(400).send({ error: error.message });
