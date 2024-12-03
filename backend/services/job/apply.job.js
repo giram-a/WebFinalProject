@@ -4,7 +4,7 @@ import { User } from "../../model/User.model.js";
 export const applyJob = async (req, res) => {
   try {
     const { id, userId } = req.body;
-    const job = await Job.findById(id, req.body);
+    const job = await Job.findById(id);
     const user = await User.findById(userId);
     job.applicants.push(userId);
     await job.save();

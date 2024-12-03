@@ -17,6 +17,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { useNavigate } from 'react-router-dom'
+import { findCompany } from '@/api/companyApi'
 
 const EditJob = () => {
     const queryString = window.location.search;
@@ -51,10 +52,15 @@ const EditJob = () => {
     
   const fetchDataForCompany = async () => {
     try {
-      console.log(user)
+      // console.log(user)
       let token = await getToken();
       const res = await getJobById(jobId, token);
-      console.log(res.data.data);
+      const company = await findCompany(user.id, token);
+      console.log(company);
+      // if (company.data.accessStatus === "PENDING") {
+      //   setIsDialogOpen(true);
+      // }
+      // console.log(res.data.data);
       setFormData(res.data.data);
     } catch (error) {
       console.error("Error fetching job data:", error);
@@ -177,7 +183,7 @@ const EditJob = () => {
         </Card>
       </form>
 
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen} hideCloseButton>
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Approval Required</DialogTitle>

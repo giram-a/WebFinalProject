@@ -16,9 +16,18 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "@/hooks/use-toast";
 import { Drawer } from 'vaul';
 import { Toaster } from '@/components/ui/toaster';
-import { useAuth, useUser } from '@clerk/clerk-react';
+import { useAuth, useClerk, useUser } from '@clerk/clerk-react';
 import { getJobsByCompany,updateJobVisibility } from '@/api/jobsApi';
 import { useNavigate } from 'react-router-dom';
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+  } from "@/components/ui/dialog";
+import { findCompany } from '@/api/companyApi';
 
 const JobsList = ()=>{
     const {getToken} = useAuth(); 
@@ -27,7 +36,9 @@ const JobsList = ()=>{
     const [loading, setLoading] = useState(true);
     const [selectedJobId, setSelectedJobId] = useState(null);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+    const [isDialogOpen,setIsDialogOpen] = useState(false);
     const navigate = useNavigate();
+    const { signOut } = useClerk();
     useEffect(() => {
         
 
@@ -39,6 +50,10 @@ const JobsList = ()=>{
         try {
             let token = await getToken();
             const response = await getJobsByCompany(user.id,token);
+            const company = await findCompany(user.id,token);
+            if(company.data.accessStatus === "PENDING"){
+                setIsDialogOpen(true);
+            }
             setJobs(response.data);
             setLoading(false);
         } catch (error) {
@@ -82,7 +97,11 @@ const JobsList = ()=>{
     const handleEdit = ()=>{
         navigate(`/employer/editjob?id=${selectedJobId._id}`);
     }
+    const handleLogout =async ()=>{
+        await signOut();
+    }
     return (
+        <>
         <Card className="w-full max-w-4xl mx-auto mt-8">
             <Toaster/>
             <CardHeader>
@@ -184,6 +203,20 @@ const JobsList = ()=>{
                 </Drawer.Portal>
             </Drawer.Root>
         </Card>
+              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+              <DialogContent onInteractOutside={(e)=>e.preventDefault()}>
+                <DialogHeader>
+                  <DialogTitle>Approval Required</DialogTitle>
+                  <DialogDescription>
+                    Your company&apos;s access status is pending. Please contact the admin for approval. You will be logged out from here.
+                  </DialogDescription>
+                </DialogHeader>
+                <DialogFooter>
+                  <Button onClick={handleLogout} variant="destructive" className="w-full">Logout</Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+            </>
     )
 }
 

@@ -179,8 +179,8 @@ const AddJob = () => {
         </Card>
       </form>
 
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen} hideCloseButton>
-        <DialogContent>
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent onInteractOutside={(e)=>e.preventDefault()}>
           <DialogHeader>
             <DialogTitle>Approval Required</DialogTitle>
             <DialogDescription>
