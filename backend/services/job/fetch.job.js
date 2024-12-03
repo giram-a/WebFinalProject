@@ -7,7 +7,7 @@ export const getAllJobs = async (req, res) => {
     if (id) {
       jobs = await Job.findOne({ _id: id });
     } else {
-      jobs = await Job.find({});
+      jobs = await Job.find({ publishStatus: "PUBLISHED" });
     }
 
     if (jobs) {
