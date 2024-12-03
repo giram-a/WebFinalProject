@@ -12,10 +12,12 @@ export const applyJob = async (req, res) => {
     await job.save();
     user.appliedJob.push({
       jobId: _id,
-      state: "applied",
-      date: Date.now(),
-      jobTitle: job.jobTitle,
-      companyName: job.companyName,
+      details: {
+        state: "applied",
+        date: new Date(),
+        jobTitle: job.jobTitle,
+        companyName: job.companyName,
+      },
     });
     await user.save();
     res.send({
