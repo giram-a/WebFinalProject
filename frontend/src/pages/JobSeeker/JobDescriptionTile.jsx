@@ -17,6 +17,7 @@ const JobDescriptionTile = ({ activeJob }) => {
     const [isDialogOpen, setIsDialogOpen] = useState(false)
     const [isSubmitted, setIsSubmitted] = useState(false)
     const [submittedTime, setSubmittedTime] = useState(null)
+    const [isExternalApplyDialogOpen, setIsExternalApplyDialogOpen] = useState(false)
 
     const { getToken } = useAuth();
     const { user } = useUser();
@@ -47,6 +48,11 @@ const JobDescriptionTile = ({ activeJob }) => {
         setIsDialogOpen(false)
     }
 
+    const handleExternalApplyClick = (e) => {
+        e.preventDefault();
+        setIsExternalApplyDialogOpen(true);
+    }
+
     useEffect(() => {
         if (!UserData || Object.keys(UserData).length === 0) {
             (async () => {
@@ -75,7 +81,20 @@ const JobDescriptionTile = ({ activeJob }) => {
             <Separator className="my-3" />
             <div className='flex flex-wrap justify-between items-center'>
                 {activeJob.applyLink ? (
-                    <h4>Apply Link: <a className='hover:text-blue-300 underline' href={activeJob.applyLink} target='_blank' rel="noopener noreferrer">{activeJob.applyLink}</a></h4>
+                    <>
+                        <h4>Apply Link: <a className='hover:text-blue-300 underline' href={activeJob.applyLink} target='_blank' rel="noopener noreferrer" onClick={handleExternalApplyClick}>{activeJob.applyLink}</a></h4>
+                        <Dialog open={isExternalApplyDialogOpen} onOpenChange={setIsExternalApplyDialogOpen}>
+                            <DialogContent>
+                                <DialogHeader>
+                                    <DialogTitle>Did you apply to this job?</DialogTitle>
+                                </DialogHeader>
+                                <div className="flex justify-center space-x-4 mt-4">
+                                    <Button onClick={handleSubmitApplication}>Yes</Button>
+                                    <Button variant="outline" onClick={() => setIsExternalApplyDialogOpen(false)}>No</Button>
+                                </div>
+                            </DialogContent>
+                        </Dialog>
+                    </>
                 ) : isSubmitted ? (
                     <div className="flex items-center space-x-2">
                         <span className="text-green-500 font-semibold">Submitted</span>
