@@ -56,9 +56,9 @@ const Resume = () => {
             const response = await getPresignedUrlForResumeUpload(file.name, user.id, file.type, token);
             const { presigned, fileUrl } = response.data;
 
-            updateUserResumeLink(fileUrl);
-
             const res = await uploadResumeToS3(presigned, file)
+
+            updateUserResumeLink(fileUrl);
 
             if (res.status) {
                 setUploadStatus(false);
