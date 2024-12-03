@@ -11,6 +11,7 @@ import { useAuth, useUser } from '@clerk/clerk-react'
 import { toast } from '@/hooks/use-toast'
 import { Toaster } from '@/components/ui/toaster'
 import { applyToJob } from '@/api/jobsApi'
+import { sendEmail } from '@/api/emailApi'
 
 const JobDescriptionTile = ({ activeJob }) => {
     const { user: UserData, fetchUser } = useUserStore();
@@ -34,6 +35,8 @@ const JobDescriptionTile = ({ activeJob }) => {
             console.log(res);
             setIsSubmitted(true)
             setSubmittedTime(new Date().toLocaleString())
+            const emailRes = await sendEmail("jobApplicationConfirmation",user.emailAddresses[0].emailAddress, await getToken());
+            console.log(emailRes);
             toast({
                 title: "Success",
                 description: "Job application submitted successfully.",
