@@ -6,6 +6,7 @@ import { Loader2, CheckCircle, XCircle } from 'lucide-react';
 import { useAuth, useUser } from "@clerk/clerk-react";
 import { updateUser } from "@/api/userApi";
 import useUserStore from "@/features/user/userStore";
+import { sendEmail } from "@/api/emailApi";
 
 const ReturnComponent = () => {
   const { user } = useUser();
@@ -24,7 +25,11 @@ const ReturnComponent = () => {
       .then((res) => res.json())
       .then(async (data) => {
         let response = await updateUser({ id: user.id, isPremiumUser: data.status === "complete" }, await getToken());
-        console.log(response);
+        if(data.status === "complete"){
+          // send email to user;
+          const res = await sendEmail("premiumPurchase",user.emailAddresses[0].emailAddress, await getToken());
+          console.log(res);  
+        }
         updateUserPremiumStatus(true)
         setStatus(data.status);
         setCustomerEmail(data.customer_email);
