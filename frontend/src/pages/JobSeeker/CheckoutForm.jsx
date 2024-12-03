@@ -8,13 +8,13 @@ const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
 
 const CheckoutForm = () => {
-  const fetchClientSecret = useCallback(() => {
+  const fetchClientSecret = useCallback(async () => {
     // Create a Checkout Session
-    return fetch("http://localhost:8080/payment/create-checkout-session", {
+    const res = await fetch("http://localhost:8080/payment/create-checkout-session", {
       method: "POST",
-    })
-      .then((res) => res.json())
-      .then((data) => data.clientSecret);
+    });
+    const data = await res.json();
+    return data.clientSecret;
   }, []);
 
   const options = { fetchClientSecret };

@@ -1,12 +1,25 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
-import { UserButton } from '@clerk/clerk-react';
+import { UserButton, useAuth, useUser } from '@clerk/clerk-react';
 import { Crown } from 'lucide-react';
 import logo from '../../assets/logo.png';
+import useUserStore from '@/features/user/userStore';
 
 const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+    const { user: UserData, fetchUser } = useUserStore();
+    const { user } = useUser()
+    const { getToken } = useAuth()
+
+    useEffect(() => {
+        if (!UserData || Object.keys(UserData).length === 0) {
+            (async () => {
+                const token = await getToken();
+                fetchUser({ id: user.id, token })
+            })()
+        }
+    }, [UserData, fetchUser, user]);
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -38,12 +51,14 @@ const Navbar = () => {
                         <li className="hover:text-foreground">
                             <NavLink className={({ isActive }) => isActive ? 'text-black' : ''} to={'/jobseeker/resume'}>Resume</NavLink>
                         </li>
-                        <li>
-                            <NavLink className="flex justify-between items-center border-2 border-yellow-400 text-yellow-600 hover:bg-yellow-50 hover:text-yellow-700 transition-colors duration-300 px-2 rounded-lg py-1" to={'/jobseeker/premium'}>
-                                <Crown className="w-4 h-4 mr-2" />
-                                Buy Premium
-                            </NavLink>
-                        </li>
+                        {UserData && UserData?.isPremiumUser ? "" : (
+                            <li>
+                                <NavLink className="flex justify-between items-center border-2 border-yellow-400 text-yellow-600 hover:bg-yellow-50 hover:text-yellow-700 transition-colors duration-300 px-2 rounded-lg py-1" to={'/jobseeker/premium'}>
+                                    <Crown className="w-4 h-4 mr-2" />
+                                    Buy Premium
+                                </NavLink>
+                            </li>
+                        )}
                         <li>
                             <UserButton />
                         </li>
@@ -62,12 +77,14 @@ const Navbar = () => {
                         <li className="hover:text-foreground">
                             <NavLink className={({ isActive }) => isActive ? 'text-black' : ''} to={'/jobseeker/resume'}>Resume</NavLink>
                         </li>
-                        <li>
-                            <NavLink className="flex justify-between items-center border-2 border-yellow-400 text-yellow-600 hover:bg-yellow-50 hover:text-yellow-700 transition-colors duration-300 px-2 rounded-lg py-1" to={'/jobseeker/premium'}>
-                                <Crown className="w-4 h-4 mr-2" />
-                                Buy Premium
-                            </NavLink>
-                        </li>
+                        {UserData && UserData?.isPremiumUser ? "" : (
+                            <li>
+                                <NavLink className="flex justify-between items-center border-2 border-yellow-400 text-yellow-600 hover:bg-yellow-50 hover:text-yellow-700 transition-colors duration-300 px-2 rounded-lg py-1" to={'/jobseeker/premium'}>
+                                    <Crown className="w-4 h-4 mr-2" />
+                                    Buy Premium
+                                </NavLink>
+                            </li>
+                        )}
                         <li>
                             <UserButton />
                         </li>

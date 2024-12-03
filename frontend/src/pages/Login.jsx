@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { NavLink, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { createUser, setUserMetaData } from '@/api/userApi'
+import useUserStore from '@/features/user/userStore'
 
 const Login = () => {
   const location = useLocation();
@@ -22,6 +23,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const { fetchUser } = useUserStore();
 
   useEffect(() => {
     if (isSignedIn && user) {
@@ -54,6 +56,7 @@ const Login = () => {
   }
 
   function routeUser() {
+    setUserState(user);
     const roleToRouteMap = {
       ADMIN: '/admin',
       EMPLOYER: '/employer',
@@ -64,6 +67,11 @@ const Login = () => {
     if (route) {
       navigate(route, { replace: true });
     }
+  }
+
+  async function setUserState(u) {
+    const token = await getToken();
+    fetchUser({ id: u.id, token })
   }
 
   const handleSubmit = async (e) => {

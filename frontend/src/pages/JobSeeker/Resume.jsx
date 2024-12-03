@@ -1,6 +1,6 @@
 import { getPresignedUrlForResumeUpload, uploadResumeToS3 } from '@/api/userApi';
 import { useAuth, useUser } from '@clerk/clerk-react';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useMediaQuery } from "react-responsive";
 import ResumeViewer from './ResumeViewer';
 import { Label } from '@/components/ui/label';
@@ -9,11 +9,13 @@ import { Button } from '@/components/ui/button';
 import { Toaster } from '@/components/ui/toaster';
 import { toast } from "@/hooks/use-toast";
 import { Loader2 } from 'lucide-react';
+import useUserStore from '@/features/user/userStore';
 
 const Resume = () => {
 
+    const { user: UserData, updateUserResumeLink, fetchUser } = useUserStore();
+
     const isMobile = useMediaQuery({ maxWidth: 640 });
-    const publicFileUrl = "https://future-hire.s3.us-east-1.amazonaws.com/user_2pYJ8j01mD2J1YwqvWls8RoadHd/CRD.pdf";
 
     const [file, setFile] = useState(null);
     const [uploadStatus, setUploadStatus] = useState(false);
@@ -24,6 +26,15 @@ const Resume = () => {
     if (!isLoaded && !isUserLoaded) {
         return "Loading ...."
     }
+
+    useEffect(() => {
+        if (!UserData || Object.keys(UserData).length === 0) {
+            (async () => {
+                const token = await getToken();
+                fetchUser({ id: user.id, token })
+            })()
+        }
+    }, [UserData, fetchUser, user]);
 
     const handleFileChange = (event) => {
         setFile(() => event.target.files[0]);
@@ -43,7 +54,9 @@ const Resume = () => {
             setUploadStatus(true);
             const token = await getToken();
             const response = await getPresignedUrlForResumeUpload(file.name, user.id, file.type, token);
-            const { presigned } = response.data;
+            const { presigned, fileUrl } = response.data;
+
+            updateUserResumeLink(fileUrl);
 
             const res = await uploadResumeToS3(presigned, file)
 
@@ -91,7 +104,11 @@ const Resume = () => {
             </div>
 
             <div className="w-full xs:w-[100%] md:w-fit p-4 flex justify-center items-center shadow-md border-slate-200 border-2 rounded-lg m-3 hover:shadow-2xl">
-                <ResumeViewer publicUrl={publicFileUrl} maxWidth={isMobile ? 350 : 650} />
+                {
+                    UserData && UserData?.resumeLink ? (<ResumeViewer publicUrl={UserData.resumeLink} maxWidth={isMobile ? 350 : 650} />) : (
+                        <p>No Resume Present, Upload a new One</p>
+                    )
+                }
             </div>
 
             <Toaster />

@@ -3,7 +3,6 @@ import { User } from "../../model/User.model.js";
 export const findUser = async (req, res) => {
   try {
     const { id } = req.query;
-    console.log(id);
     let users;
     if (!id) {
       return res.status(400).json({ error: "User ID is required." });
