@@ -17,7 +17,7 @@ const data = [
 export const Board = () => {
     const [cards, setCards] = useState(data)
     return (
-        <div className='flex h-full w-full gap-5 overflow-scroll p-12'>
+        <div className='flex h-full w-full gap-4 overflow-scroll p-12 justify-between'>
             <BoardColumn
                 title="Applied Jobs"
                 column="appliedJobs"

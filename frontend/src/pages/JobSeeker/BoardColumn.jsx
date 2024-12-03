@@ -101,7 +101,7 @@ const BoardColumn = ({ title, headingColor, column, cards, setCards }) => {
     };
 
     return (
-        <div className='w-56 shrink-0'>
+        <div className='w-80 md:shrink xs:shrink-0'>
             <div className='mb-3 flex items-center justify-between'>
                 <h3 className={`font-medium ${headingColor}`}>{title}</h3>
                 <span className='rounded text-sm text-neutral-400'>{filteredCards.length}</span>
@@ -124,7 +124,7 @@ const Card = ({ title, id, column, handleDragStart }) => {
         <>
             <DropIndicator beforeId={id} column={column} />
             <motion.div layout
-                layoutId={id} draggable="true" onDragStart={(e) => { handleDragStart(e, { title, id, column }) }} className='cursor-grab rounded border border-slate-600 bg-slate-300 p-3 active:cursor-grabbing'>
+                layoutId={id} draggable="true" onDragStart={(e) => { handleDragStart(e, { title, id, column }) }} className='cursor-grab rounded border border-slate-200 bg-white shadow-md p-3 active:cursor-grabbing'>
                 <p className='text-sm'>{title}</p>
             </motion.div>
         </>
@@ -136,7 +136,7 @@ const DropIndicator = ({ beforeId, column }) => {
         <div
             data-before={beforeId || "-1"}
             data-column={column}
-            className="my-0.5 h-0.5 w-full bg-violet-400 opacity-0"
+            className="my-1 h-0.5 w-full bg-violet-400 opacity-0"
         />
     );
 };
