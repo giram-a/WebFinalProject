@@ -24,7 +24,8 @@ const JobDescriptionTile = ({activeJob}) => {
 
     const handleSubmitApplication = async () => {
         try{
-            const res = await applyToJob(activeJob.id, user.id, await getToken());
+            console.log(activeJob._id)
+            const res = await applyToJob(activeJob._id, user.id, await getToken());
             console.log(res);
             toast({
                 variant: "destructive",

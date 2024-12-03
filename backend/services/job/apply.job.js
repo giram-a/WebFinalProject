@@ -3,16 +3,17 @@ import { User } from "../../model/User.model.js";
 
 export const applyJob = async (req, res) => {
   try {
-    const { id, userId } = req.body;
-    const job = await Job.findOne({ _id: id });
+    const { _id, userId } = req.body;
+    console.log(_id, userId);
+    const job = await Job.findById(_id);
     const user = await User.findOne({ userId });
     console.log(job);
     job.applicants.push(userId);
     await job.save();
     user.appliedJob.push({
-      jobId: id,
+      jobId: _id,
       state: "applied",
-      date: new Date.now(),
+      date: Date.now(),
       jobTitle: job.jobTitle,
       companyName: job.companyName,
     });

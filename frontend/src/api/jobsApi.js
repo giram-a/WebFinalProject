@@ -110,7 +110,7 @@ export const applyToJob = async (jobId, userId, token) => {
     const response = await apiClient.post(
       API_ENDPOINTS.APPLYTOJOB,
       {
-        jobId,
+        _id: jobId,
         userId,
       },
       {
