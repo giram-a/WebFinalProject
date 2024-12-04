@@ -2,8 +2,7 @@ import { User } from "../../model/User.model.js";
 
 export const updateAppliedJobState = async (req, res) => {
   try {
-    const { userId, jobId } = req.query;
-    const { state } = req.body;
+    const { userId, jobId, state } = req.query;
 
     const user = await User.findOne({ userId });
     if (!user) {
@@ -18,13 +17,15 @@ export const updateAppliedJobState = async (req, res) => {
         .send({ message: "Job not found in user's applied jobs" });
     }
 
-    appliedJob.details.state = state;
-
-    await user.save();
+    const updatedUser = await User.findOneAndUpdate(
+      { userId, "appliedJob.jobId": jobId },
+      { $set: { "appliedJob.$.details.state": state } },
+      { new: true }
+    );
 
     res.json({
       message: "Job state updated successfully",
-      data: appliedJob,
+      data: updatedUser,
     });
   } catch (e) {
     console.error(e);

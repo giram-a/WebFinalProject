@@ -14,4 +14,5 @@ export const API_ENDPOINTS = {
   GETPRESIGNEDURL: "/user/s3-presigned-url",
   APPLYTOJOB: "/job/apply",
   SENDEMAIL: "/email/send",
+  UPDATEJOBSTATUS: "/job/update-state"
 };

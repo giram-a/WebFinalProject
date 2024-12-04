@@ -1,9 +1,15 @@
 import React, { useState } from 'react'
 import { motion } from "framer-motion";
+import { useAuth } from '@clerk/clerk-react';
+import useUserStore from '@/features/user/userStore';
+import { updateJobStatus } from '@/api/jobsApi';
 
 const BoardColumn = ({ title, headingColor, column, cards, setCards }) => {
-
+    const { updateJobState } = useUserStore();
     const [active, setActive] = useState(false);
+    const { getToken, isLoaded } = useAuth();
+    const { user } = useUserStore();
+
     const filteredCards = cards.filter(c => c.column === column);
 
     const handleDragStart = (e, card) => {
@@ -50,9 +56,20 @@ const BoardColumn = ({ title, headingColor, column, cards, setCards }) => {
 
                 copy.splice(insertAtIndex, 0, cardToTransfer);
             }
+            updateCardDbState(cardId, column)
+            updateJobState(cardId, column)
             setCards(copy);
         }
     };
+
+
+    const updateCardDbState = async (jobId, state) => {
+        if (isLoaded && user) {
+            const token = await getToken();
+            console.log("_T_ => ",token);
+            await updateJobStatus(user?.userId, jobId, state, token)
+        }
+    }
 
     const clearHighlights = (els) => {
         const indicators = els || getIndicators();
@@ -119,13 +136,15 @@ const BoardColumn = ({ title, headingColor, column, cards, setCards }) => {
 }
 
 
-const Card = ({ title, id, column, handleDragStart }) => {
+const Card = ({ title, id, column, details, handleDragStart }) => {
     return (
         <>
             <DropIndicator beforeId={id} column={column} />
             <motion.div layout
                 layoutId={id} draggable="true" onDragStart={(e) => { handleDragStart(e, { title, id, column }) }} className='cursor-grab rounded border border-slate-200 bg-white shadow-md p-3 active:cursor-grabbing'>
-                <p className='text-sm'>{title}</p>
+                <p className='text-lg'>{title}</p>
+                <p className='text-md'>{details.companyName}</p>
+                <p className='text-sm justify-end flex mt-2'>{details.date}</p>
             </motion.div>
         </>
     )

@@ -125,3 +125,21 @@ export const applyToJob = async (jobId, userId, token) => {
     return { status: false, data: error };
   }
 };
+
+export const updateJobStatus = async (userId, jobId, state, token) => {
+  try {
+    const response = await apiClient.put(
+      `${API_ENDPOINTS.UPDATEJOBSTATUS}?jobId=${jobId}&userId=${userId}&state=${state}`,
+      {},
+      {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+    );
+    return { status: true, data: response.data };
+  } catch (error) {
+    console.log("Error updating Job status");
+    return { status: false, data: error };
+  }
+};
