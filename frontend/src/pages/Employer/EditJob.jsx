@@ -23,7 +23,7 @@ const EditJob = () => {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const jobId = urlParams.get('id');
-    console.log(jobId);
+    // console.log(jobId);
   const { getToken } = useAuth();
   const { user, isLoaded } = useUser();
   const { signOut } = useClerk();
