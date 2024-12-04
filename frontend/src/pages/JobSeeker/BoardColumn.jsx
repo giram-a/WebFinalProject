@@ -119,13 +119,15 @@ const BoardColumn = ({ title, headingColor, column, cards, setCards }) => {
 }
 
 
-const Card = ({ title, id, column, handleDragStart }) => {
+const Card = ({ title, id, column, details, handleDragStart }) => {
     return (
         <>
             <DropIndicator beforeId={id} column={column} />
             <motion.div layout
                 layoutId={id} draggable="true" onDragStart={(e) => { handleDragStart(e, { title, id, column }) }} className='cursor-grab rounded border border-slate-200 bg-white shadow-md p-3 active:cursor-grabbing'>
-                <p className='text-sm'>{title}</p>
+                <p className='text-lg'>{title}</p>
+                <p className='text-md'>{details.companyName}</p>
+                <p className='text-sm justify-end flex mt-2'>{details.date}</p>
             </motion.div>
         </>
     )
