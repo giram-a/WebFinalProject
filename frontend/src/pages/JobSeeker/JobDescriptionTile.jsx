@@ -53,11 +53,14 @@ const JobDescriptionTile = ({ activeJob }) => {
 
         console.log("Updated", UserData);
         setIsDialogOpen(false)
+        setIsExternalApplyDialogOpen(false);
     }
 
-    const handleExternalApplyClick = (e) => {
+    const handleExternalApplyClick = async (e) => {
         e.preventDefault();
         setIsExternalApplyDialogOpen(true);
+        // await handleSubmitApplication();
+        // setIsExternalApplyDialogOpen(false);
     }
 
     useEffect(() => {
@@ -133,7 +136,7 @@ const JobDescriptionTile = ({ activeJob }) => {
                                     <Label htmlFor="resume" className="text-right">
                                         Resume URL
                                     </Label>
-                                    <Input id="resume" type="url" className="col-span-3" value={UserData.resumeLink} disabled />
+                                    <Input id="resume" type="url" className="col-span-3" value={UserData?.resumeLink} disabled />
                                 </div>
                             </div>
                             <Button onClick={handleSubmitApplication}>Apply to Job</Button>

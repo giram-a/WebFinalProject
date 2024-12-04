@@ -184,7 +184,7 @@ const JobsList = ()=>{
                                             </div>
                                             <div>
                                                 <h3 className="font-semibold mb-2">Total applicants:</h3>
-                                                    <Badge variant={selectedJobId.accessStatus === 'PENDING' ? 'outline' : 'default'}>
+                                                    <Badge onClick={()=>navigate(`/employer/applicants?id=${selectedJobId._id}`)} variant={selectedJobId.accessStatus === 'PENDING' ? 'outline' : 'default'}>
                                                         {selectedJobId?.applicants?.length || "0" }
                                                     </Badge>
                                             </div>
