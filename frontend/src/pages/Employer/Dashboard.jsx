@@ -88,7 +88,6 @@ const Dashboard = () => {
   }
 
   return (
-
     <div className='flex flex-col items-center justify-center min-h-screen'>
       <Toaster/>
       <Dialog open={isDialogOpen} onOpenChange={() => {}}>
@@ -163,4 +162,3 @@ const Dashboard = () => {
 }
 
 export default Dashboard
-
