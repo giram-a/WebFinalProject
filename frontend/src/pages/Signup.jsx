@@ -117,8 +117,8 @@ const Signup = () => {
             const role = location.state?.userType || "JOB_SEEKER"
             const { createdSessionId } = await signUp.authenticateWithRedirect({
                 strategy: 'oauth_google',
-                redirectUrl: '/',
-                redirectUrlComplete: `/?type=GOOGLE_SIGNUP&role=${role}`
+                redirectUrl: '/login',
+                redirectUrlComplete: `/login?type=GOOGLE_SIGNUP&role=${role}`
             });
 
             if (createdSessionId) {
@@ -136,8 +136,8 @@ const Signup = () => {
             const role = "EMPLOYER"
             const { createdSessionId } = await signUp.authenticateWithRedirect({
                 strategy: 'oauth_google',
-                redirectUrl: '/',
-                redirectUrlComplete: `/?type=GOOGLE_SIGNUP&role=${role}`
+                redirectUrl: '/login',
+                redirectUrlComplete: `/login?type=GOOGLE_SIGNUP&role=${role}`
             });
 
             if (createdSessionId) {
