@@ -37,7 +37,7 @@ const JobDescriptionTile = ({ activeJob }) => {
             let date = new Date().toLocaleString();
             setSubmittedTime(date)
             const emailRes = await sendEmail("jobApplicationConfirmation", user.emailAddresses[0].emailAddress, await getToken());
-            addAppliedJob({ jobId: activeJob._id, details: { "state": "applied", jobTitle: activeJob.jobTitle, jobTitle: activeJob.companyName, date: date} })
+            addAppliedJob({ jobId: activeJob._id, details: { "state": "applied", jobTitle: activeJob.jobTitle, companyName: activeJob.companyName, date: date} })
             console.log(emailRes);
             toast({
                 title: "Success",

@@ -16,10 +16,15 @@ import JobsList from '@/pages/Employer/JobsList';
 import EditJob from '@/pages/Employer/EditJob';
 import Resume from '@/pages/JobSeeker/Resume';
 import ApplicantList from '@/pages/Employer/ApplicantList';
+import LandingPage from '@/pages/Landing/LandingPage';
 
 const routeConfig = [
     {
         path: "/",
+        element: <LandingPage />
+    },
+    {
+        path: "/login",
         element: <Login />
     },
     {

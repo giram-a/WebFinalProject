@@ -29,6 +29,7 @@ import {
 import { NavLink, useNavigate, useLocation } from 'react-router-dom'
 import { REGEXP_ONLY_DIGITS } from 'input-otp'
 import { createUser, setUserMetaData } from '@/api/userApi'
+import { Separator } from '@/components/ui/separator'
 
 const Signup = () => {
     const navigate = useNavigate();
@@ -116,8 +117,27 @@ const Signup = () => {
             const role = location.state?.userType || "JOB_SEEKER"
             const { createdSessionId } = await signUp.authenticateWithRedirect({
                 strategy: 'oauth_google',
-                redirectUrl: '/',
-                redirectUrlComplete: `/?type=GOOGLE_SIGNUP&role=${role}`
+                redirectUrl: '/login',
+                redirectUrlComplete: `/login?type=GOOGLE_SIGNUP&role=${role}`
+            });
+
+            if (createdSessionId) {
+                await setActive({ session: createdSessionId });
+                console.log("Google signup completed");
+            }
+        } catch (error) {
+            console.error("Google sign up error:", error);
+            setError(error.errors?.[0]?.message);
+        }
+    }
+
+    const handleGoogleSignUpEmployer = async () => {
+        try {
+            const role = "EMPLOYER"
+            const { createdSessionId } = await signUp.authenticateWithRedirect({
+                strategy: 'oauth_google',
+                redirectUrl: '/login',
+                redirectUrlComplete: `/login?type=GOOGLE_SIGNUP&role=${role}`
             });
 
             if (createdSessionId) {
@@ -279,6 +299,10 @@ const Signup = () => {
                         </div>
                         <Button variant="outline" className="w-full mt-3" onClick={handleGoogleSignUp}>
                             Google
+                        </Button>
+                        <Separator className="mt-3" />
+                        <Button variant="outline" className="w-full mt-3" onClick={handleGoogleSignUpEmployer}>
+                            Are you Employer? Signup with Google
                         </Button>
                         <div className="flex w-full justify-center mt-3 text-sm">
                             <span className="text-muted-foreground mr-2">
