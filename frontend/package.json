@@ -38,6 +38,7 @@
     "react-responsive": "^10.0.0",
     "react-router-dom": "^7.0.1",
     "simple-xml-to-json": "^1.2.2",
+    "styled-components": "^6.1.13",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^1.1.1",

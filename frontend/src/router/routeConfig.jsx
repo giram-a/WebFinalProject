@@ -16,11 +16,16 @@ import JobsList from '@/pages/Employer/JobsList';
 import EditJob from '@/pages/Employer/EditJob';
 import Resume from '@/pages/JobSeeker/Resume';
 import ApplicantList from '@/pages/Employer/ApplicantList';
+import Dashboard from '@/components/common/Dashboard';
 
 const routeConfig = [
     {
         path: "/",
         element: <Login />
+    },
+    {
+        path:"/landing",
+        element: <Dashboard/>
     },
     {
         path: "/signup",
