@@ -14,7 +14,7 @@ import { applyToJob } from '@/api/jobsApi'
 import { sendEmail } from '@/api/emailApi'
 
 const JobDescriptionTile = ({ activeJob }) => {
-    const { user: UserData, fetchUser } = useUserStore();
+    const { user: UserData, fetchUser, addAppliedJob } = useUserStore();
     const [isDialogOpen, setIsDialogOpen] = useState(false)
     const [isSubmitted, setIsSubmitted] = useState(false)
     const [submittedTime, setSubmittedTime] = useState(null)
@@ -34,8 +34,10 @@ const JobDescriptionTile = ({ activeJob }) => {
             const res = await applyToJob(activeJob._id, user.id, await getToken());
             console.log(res);
             setIsSubmitted(true)
-            setSubmittedTime(new Date().toLocaleString())
-            const emailRes = await sendEmail("jobApplicationConfirmation",user.emailAddresses[0].emailAddress, await getToken());
+            let date = new Date().toLocaleString();
+            setSubmittedTime(date)
+            const emailRes = await sendEmail("jobApplicationConfirmation", user.emailAddresses[0].emailAddress, await getToken());
+            addAppliedJob({ jobId: activeJob._id, details: { "state": "applied", jobTitle: activeJob.jobTitle, jobTitle: activeJob.companyName, date: date} })
             console.log(emailRes);
             toast({
                 title: "Success",
@@ -48,6 +50,8 @@ const JobDescriptionTile = ({ activeJob }) => {
                 description: "Failed to apply for job. Please try again.",
             })
         }
+
+        console.log("Updated", UserData);
         setIsDialogOpen(false)
     }
 
@@ -143,4 +147,3 @@ const JobDescriptionTile = ({ activeJob }) => {
 }
 
 export default JobDescriptionTile
-

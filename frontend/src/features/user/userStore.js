@@ -33,7 +33,31 @@ const useUserStore = create((set) => ({
                 resumeLink,
             },
         }));
-    }
+    },
+    updateJobState: (jobId, newState) => {
+        set((state) => {
+            const updatedAppliedJobs = state.user.appliedJob.map((job) =>
+                job.jobId === jobId
+                    ? { ...job, details: { ...job.details, state: newState } }
+                    : job
+            );
+
+            return {
+                user: {
+                    ...state.user,
+                    appliedJob: updatedAppliedJobs,
+                },
+            };
+        });
+    },
+    addAppliedJob: (newJob) => {
+        set((state) => ({
+            user: {
+                ...state.user,
+                appliedJob: [...(state.user.appliedJob || []), newJob],
+            },
+        }));
+    },
 }));
 
 export default useUserStore;
