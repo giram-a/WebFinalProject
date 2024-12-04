@@ -15,6 +15,7 @@ import ReturnComponent from '@/pages/JobSeeker/ReturnComponent';
 import JobsList from '@/pages/Employer/JobsList';
 import EditJob from '@/pages/Employer/EditJob';
 import Resume from '@/pages/JobSeeker/Resume';
+import ApplicantList from '@/pages/Employer/ApplicantList';
 
 const routeConfig = [
     {
@@ -43,6 +44,7 @@ const routeConfig = [
             { path: "add-job", element: <AddJob /> },
             { path: "jobs", element: <JobsList /> },
             { path: "editjob", element: <EditJob/> },
+            { path: "applicants", element: <ApplicantList/> },
         ]
     },
     {
