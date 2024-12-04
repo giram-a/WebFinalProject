@@ -74,7 +74,7 @@ const LandingPage = () => {
         <section id="hero" className="min-h-screen flex items-center justify-center text-center px-4">
           <div className="max-w-4xl mx-auto">
             <h1 className="text-4xl md:text-6xl font-bold mb-4">
-              Don't Go It Alone<br />
+              Don&apos;t Go At It Alone<br />
               <span className="text-5xl md:text-7xl font-extrabold">Let AI Be Your Co-Pilot</span>
             </h1>
             <p className="text-xl md:text-2xl mb-8">
@@ -113,15 +113,15 @@ const LandingPage = () => {
           <h2 className="text-3xl font-bold text-center mb-12">What Our Users Say</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="bg-white p-6 rounded-lg shadow-md transition-transform duration-300 hover:scale-110">
-              <p className="mb-4">"Thanks to FutureHire, I landed my dream job in less than a month!"</p>
+              <p className="mb-4">Thanks to FutureHire, I landed my dream job in less than a month!</p>
               <h5 className="font-semibold">- Sarah M.</h5>
             </div>
             <div className="bg-white p-6 rounded-lg shadow-md transition-transform duration-300 hover:scale-110">
-              <p className="mb-4">"The AI features made job searching so much easier!"</p>
+              <p className="mb-4">The AI features made job searching so much easier!</p>
               <h5 className="font-semibold">- John D.</h5>
             </div>
             <div className="bg-white p-6 rounded-lg shadow-md transition-transform duration-300 hover:scale-110">
-              <p className="mb-4">"I love how personalized my job matches are!"</p>
+              <p className="mb-4">I love how personalized my job matches are!</p>
               <h5 className="font-semibold">- Emily R.</h5>
             </div>
           </div>
