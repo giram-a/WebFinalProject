@@ -26,7 +26,7 @@ export function AppSidebar({ role }) {
                 icon: PlusSquare,
             },
             {
-                title: "List jobs",
+                title: "Manage jobs",
                 url: "/employer/jobs",
                 icon: ListIcon,
             },
