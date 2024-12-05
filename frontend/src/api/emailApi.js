@@ -1,13 +1,14 @@
 import apiClient from "./axios";
 import { API_ENDPOINTS } from "./endpoints";
 
-export const sendEmail = async (type, to, token) => {
+export const sendEmail = async (type, to, token, data) => {
   try {
     const response = await apiClient.post(
       `${API_ENDPOINTS.SENDEMAIL}/`,
       {
         type,
         to,
+        ...data,
       },
       {
         headers: {

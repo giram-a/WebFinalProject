@@ -8,11 +8,16 @@ const sendMail = (req, res) => {
 
   let template;
   if (type === "premiumPurchase") {
-    template = emailTemplates.premiumPurchase;
+    template = emailTemplates({ fullName: "Amey" }).premiumPurchase;
   } else if (type === "companyApproval") {
     template = emailTemplates.companyApproval;
   } else if (type === "jobApplicationConfirmation") {
-    template = emailTemplates.jobApplicationConfirmation;
+    const { jobTitle, companyName, fullName } = req.body;
+    template = emailTemplates({
+      fullName,
+      jobTitle,
+      companyName,
+    }).jobApplicationConfirmation;
   } else {
     return res.status(400).send({ error: "Invalid email type" });
   }

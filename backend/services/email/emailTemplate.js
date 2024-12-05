@@ -1,9 +1,10 @@
-export const emailTemplates = {
-  premiumPurchase: {
-    subject: "Welcome to FutureHire Premium!",
-    from: "",
-    to: "",
-    html: `
+export const emailTemplates = (args) => {
+  return {
+    premiumPurchase: {
+      subject: "Welcome to FutureHire Premium!",
+      from: "",
+      to: "",
+      html: `
           <!DOCTYPE html>
           <html lang="en">
           <head>
@@ -24,7 +25,9 @@ export const emailTemplates = {
                 <h1>Welcome to FutureHire Premium!</h1>
               </div>
               <div class="content">
-                <p>Dear Valued Customer,</p>
+                <p>Dear ${
+                  args.fullName ? "" + args.fullName : "Valued Customer"
+                },</p>
                 <p>Congratulations! Your purchase of FutureHire Premium was successful. You can now enjoy all the benefits of our premium features.</p>
                 <p>With FutureHire Premium, you'll have access to:</p>
                 <ul>
@@ -34,7 +37,6 @@ export const emailTemplates = {
                   <li>And much more!</li>
                 </ul>
                 <p>To start exploring your new premium features, click the button below:</p>
-                <p><a href="https://futurehire.com/dashboard" class="button">Go to My Dashboard</a></p>
                 <p>If you have any questions or need assistance, don't hesitate to contact our support team.</p>
                 <p>Thank you for choosing FutureHire Premium!</p>
                 <p>Best regards,<br>The FutureHire Team</p>
@@ -43,12 +45,12 @@ export const emailTemplates = {
           </body>
           </html>
         `,
-  },
-  companyApproval: {
-    subject: "Your Company Has Been Approved on FutureHire",
-    from: "",
-    to: "",
-    html: `
+    },
+    companyApproval: {
+      subject: "Your Company Has Been Approved on FutureHire",
+      from: "",
+      to: "",
+      html: `
           <!DOCTYPE html>
           <html lang="en">
           <head>
@@ -69,7 +71,9 @@ export const emailTemplates = {
                 <h1>Your Company Has Been Approved!</h1>
               </div>
               <div class="content">
-                <p>Dear Valued Partner,</p>
+                <p>Dear ${
+                  args.fullName ? "" + args.fullName : "Valued Customer"
+                },</p>
                 <p>We're excited to inform you that your company has been approved in the FutureHire system!</p>
                 <p>You can now start adding jobs and connecting with top talent. Here's what you can do next:</p>
                 <ul>
@@ -78,8 +82,6 @@ export const emailTemplates = {
                   <li>Create and publish your job listings</li>
                   <li>Start reviewing applications from qualified candidates</li>
                 </ul>
-                <p>To get started, click the button below:</p>
-                <p><a href="https://futurehire.com/post-job" class="button">Post Your First Job</a></p>
                 <p>If you need any assistance or have questions about posting jobs, our support team is here to help.</p>
                 <p>Thank you for choosing FutureHire for your recruitment needs. We look forward to helping you find your next great hire!</p>
                 <p>Best regards,<br>The FutureHire Team</p>
@@ -88,12 +90,12 @@ export const emailTemplates = {
           </body>
           </html>
         `,
-  },
-  jobApplicationConfirmation: {
-    subject: "Job Application Confirmation - FutureHire",
-    from: "",
-    to: "",
-    html: `
+    },
+    jobApplicationConfirmation: {
+      subject: "Job Application Confirmation - FutureHire",
+      from: "",
+      to: "",
+      html: `
           <!DOCTYPE html>
           <html lang="en">
           <head>
@@ -114,13 +116,16 @@ export const emailTemplates = {
                 <h1>Job Application Submitted!</h1>
               </div>
               <div class="content">
-                <p>Dear [Applicant Name],</p>
+                <p>Dear ${args.fullName ? "" + args.fullName : "Applicant"},</p>
                 <p>We're excited to confirm that your job application has been successfully submitted through FutureHire!</p>
                 <p>Here are the details of your application:</p>
                 <ul>
-                  <li>Job Title: [Job Title]</li>
-                  <li>Company: [Company Name]</li>
-                  <li>Date Applied: [Application Date]</li>
+                  <li>Job Title: ${
+                    args.jobTitle ? "" + args.jobTitle : "N/A"
+                  }</li>
+                  <li>Company: ${
+                    args.companyName ? "" + args.companyName : "N/A"
+                  }</li>
                 </ul>
                 <p>What happens next:</p>
                 <ol>
@@ -128,8 +133,6 @@ export const emailTemplates = {
                   <li>If they're interested, they may contact you for further steps.</li>
                   <li>You can check the status of your application in your FutureHire dashboard.</li>
                 </ol>
-                <p>To view your application status, click the button below:</p>
-                <p><a href="https://futurehire.com/my-applications" class="button">View My Applications</a></p>
                 <p>Remember to keep your profile updated and continue exploring other opportunities on FutureHire.</p>
                 <p>If you have any questions about your application or need assistance, please don't hesitate to contact our support team.</p>
                 <p>Best of luck with your job search!</p>
@@ -139,5 +142,6 @@ export const emailTemplates = {
           </body>
           </html>
         `,
-  },
+    },
+  };
 };
