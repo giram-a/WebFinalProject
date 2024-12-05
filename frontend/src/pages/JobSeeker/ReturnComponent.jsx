@@ -27,7 +27,7 @@ const ReturnComponent = () => {
         let response = await updateUser({ id: user.id, isPremiumUser: data.status === "complete" }, await getToken());
         if(data.status === "complete"){
           // send email to user;
-          const res = await sendEmail("premiumPurchase",user.emailAddresses[0].emailAddress, await getToken());
+          const res = await sendEmail("premiumPurchase",user.emailAddresses[0].emailAddress, await getToken(),{fullName: user.firstName + " " +user.lastName});
           console.log(res);  
         }
         updateUserPremiumStatus(true)

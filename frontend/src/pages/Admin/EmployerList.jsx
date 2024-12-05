@@ -73,8 +73,7 @@ const EmployerList = () => {
                 title: "Success",
                 description: "Company has been approved.",
             });
-            const emailRes = await sendEmail("companyApproval",selectedCompany.email, await getToken());
-            console.log("email",emailRes);
+            const emailRes = await sendEmail("companyApproval",selectedCompany.email, await getToken(),{companyName: selectedCompany.companyName});
             setIsDrawerOpen(false);
             const updatedCompanies = await getAllCompanies(await getToken());
             console.log(updatedCompanies);

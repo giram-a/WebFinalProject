@@ -36,7 +36,6 @@ export const emailTemplates = (args) => {
                   <li>Exclusive hiring insights and reports</li>
                   <li>And much more!</li>
                 </ul>
-                <p>To start exploring your new premium features, click the button below:</p>
                 <p>If you have any questions or need assistance, don't hesitate to contact our support team.</p>
                 <p>Thank you for choosing FutureHire Premium!</p>
                 <p>Best regards,<br>The FutureHire Team</p>
@@ -71,10 +70,11 @@ export const emailTemplates = (args) => {
                 <h1>Your Company Has Been Approved!</h1>
               </div>
               <div class="content">
-                <p>Dear ${
-                  args.fullName ? "" + args.fullName : "Valued Customer"
-                },</p>
-                <p>We're excited to inform you that your company has been approved in the FutureHire system!</p>
+                <p>Dear Valued Customer
+                ,</p>
+                <p>We're excited to inform you that your company ${
+                  args.companyName ? "" + args.companyName : ""
+                } has been approved in the FutureHire system!</p>
                 <p>You can now start adding jobs and connecting with top talent. Here's what you can do next:</p>
                 <ul>
                   <li>Log in to your FutureHire account</li>
