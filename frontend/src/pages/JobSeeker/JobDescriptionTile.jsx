@@ -24,23 +24,23 @@ const JobDescriptionTile = ({ activeJob }) => {
     const { user } = useUser();
 
     const handleApply = () => {
-        console.log(UserData);
+        // console.log(UserData);
         setIsDialogOpen(true)
     }
 
     const handleSubmitApplication = async () => {
         try {
-            console.log(activeJob._id)
+            // console.log(activeJob._id)
             const res = await applyToJob(activeJob._id, user.id, await getToken());
-            console.log(res);
+            // console.log(res);
             setIsSubmitted(true)
             let date = new Date().toLocaleString();
             setSubmittedTime(date)
-            console.log(user.firstName,user.lastName);
+            // console.log(user.firstName,user.lastName);
             const emailRes = await sendEmail("jobApplicationConfirmation", user.emailAddresses[0].emailAddress, await getToken(), {fullName: user.firstName + " " +user.lastName, jobTitle: activeJob.jobTitle, companyName: activeJob.companyName});
 
             addAppliedJob({ jobId: activeJob._id, details: { "state": "applied", jobTitle: activeJob.jobTitle, companyName: activeJob.companyName, date: date} })
-            console.log(emailRes);
+            // console.log(emailRes);
             toast({
                 title: "Success",
                 description: "Job application submitted successfully.",
@@ -72,8 +72,8 @@ const JobDescriptionTile = ({ activeJob }) => {
                 fetchUser({ id: user.id, token })
             })()
         }
-        console.log(activeJob);
-        console.log(UserData?.appliedJob);
+        // console.log(activeJob);
+        // console.log(UserData?.appliedJob);
         if(UserData?.appliedJob?.find(job => job.jobId === activeJob._id)){
             setIsSubmitted(true)
         }else{

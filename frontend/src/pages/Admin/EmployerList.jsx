@@ -50,7 +50,7 @@ const EmployerList = () => {
     const handleRowClick = async (companyId) => {
         try {
             const response = await getCompanyById(companyId, await getToken());
-            console.log(response.data)
+            // console.log(response.data)
             setSelectedCompany(response.data);
             setIsDrawerOpen(true);
         } catch (error) {
@@ -76,7 +76,7 @@ const EmployerList = () => {
             const emailRes = await sendEmail("companyApproval",selectedCompany.email, await getToken(),{companyName: selectedCompany.companyName});
             setIsDrawerOpen(false);
             const updatedCompanies = await getAllCompanies(await getToken());
-            console.log(updatedCompanies);
+            // console.log(updatedCompanies);
             setCompanies(updatedCompanies.data);
         } catch (error) {
             console.error("Failed to approve company:", error);
@@ -101,7 +101,7 @@ const EmployerList = () => {
             setIsDrawerOpen(false);
             // Refresh the companies list
             const updatedCompanies = await getAllCompanies(await getToken());
-            console.log(updatedCompanies);
+            // console.log(updatedCompanies);
             setCompanies(updatedCompanies.data);
         } catch (error) {
             console.error("Failed to deny company:", error);

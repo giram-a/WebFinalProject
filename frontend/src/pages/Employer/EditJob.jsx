@@ -56,10 +56,10 @@ const EditJob = () => {
       let token = await getToken();
       const res = await getJobById(jobId, token);
       const company = await findCompany(user.id, token);
-      console.log(company);
-      // if (company.data.accessStatus === "PENDING") {
-      //   setIsDialogOpen(true);
-      // }
+      // console.log(company);
+      if (company.data.accessStatus === "PENDING") {
+        setIsDialogOpen(true);
+      }
       // console.log(res.data.data);
       setFormData(res.data.data);
     } catch (error) {

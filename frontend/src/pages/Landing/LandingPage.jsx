@@ -17,7 +17,7 @@ const LandingPage = () => {
 
     window.addEventListener('scroll', handleScroll);
     if(isLoaded && user){
-      console.log(user);
+      // console.log(user);
       navigate('/login');
     }
     return () => window.removeEventListener('scroll', handleScroll);
