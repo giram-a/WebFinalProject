@@ -114,7 +114,7 @@ const EmployerList = () => {
         }
     };
     const handleBlockCompany = ()=>{
-        console.log("block")
+        // console.log("block")
     }
 
     return (

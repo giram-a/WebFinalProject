@@ -7,7 +7,7 @@ import { useAuth } from "@clerk/clerk-react";
 import { getJobById } from "@/api/jobsApi";
 import { getUser } from "@/api/userApi";
 import { Button } from "@/components/ui/button";
-import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
+import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
 
 const ApplicantList = () => {
     const queryString = window.location.search;
