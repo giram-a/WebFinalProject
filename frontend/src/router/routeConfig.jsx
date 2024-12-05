@@ -28,6 +28,10 @@ const routeConfig = [
         element: <Login />
     },
     {
+        path:"/landing",
+        element: <Dashboard/>
+    },
+    {
         path: "/signup",
         element: <Signup />
     },
