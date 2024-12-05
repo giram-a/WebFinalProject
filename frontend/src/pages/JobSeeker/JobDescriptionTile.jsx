@@ -24,21 +24,23 @@ const JobDescriptionTile = ({ activeJob }) => {
     const { user } = useUser();
 
     const handleApply = () => {
-        console.log(UserData);
+        // console.log(UserData);
         setIsDialogOpen(true)
     }
 
     const handleSubmitApplication = async () => {
         try {
-            console.log(activeJob._id)
+            // console.log(activeJob._id)
             const res = await applyToJob(activeJob._id, user.id, await getToken());
-            console.log(res);
+            // console.log(res);
             setIsSubmitted(true)
             let date = new Date().toLocaleString();
             setSubmittedTime(date)
-            const emailRes = await sendEmail("jobApplicationConfirmation", user.emailAddresses[0].emailAddress, await getToken());
+            // console.log(user.firstName,user.lastName);
+            const emailRes = await sendEmail("jobApplicationConfirmation", user.emailAddresses[0].emailAddress, await getToken(), {fullName: user.firstName + " " +user.lastName, jobTitle: activeJob.jobTitle, companyName: activeJob.companyName});
+
             addAppliedJob({ jobId: activeJob._id, details: { "state": "applied", jobTitle: activeJob.jobTitle, companyName: activeJob.companyName, date: date} })
-            console.log(emailRes);
+            // console.log(emailRes);
             toast({
                 title: "Success",
                 description: "Job application submitted successfully.",
@@ -70,7 +72,14 @@ const JobDescriptionTile = ({ activeJob }) => {
                 fetchUser({ id: user.id, token })
             })()
         }
-    }, [UserData, fetchUser, user, getToken]);
+        // console.log(activeJob);
+        // console.log(UserData?.appliedJob);
+        if(UserData?.appliedJob?.find(job => job.jobId === activeJob._id)){
+            setIsSubmitted(true)
+        }else{
+            setIsSubmitted(false);
+        }
+    }, [UserData, fetchUser, user, getToken,activeJob]);
 
     return (
         <>
@@ -90,7 +99,12 @@ const JobDescriptionTile = ({ activeJob }) => {
             </div>
             <Separator className="my-3" />
             <div className='flex flex-wrap justify-between items-center'>
-                {activeJob.applyLink ? (
+            {isSubmitted ? (
+                    <div className="flex items-center space-x-2">
+                        <span className="text-green-500 font-semibold">Applied</span>
+                    </div>
+                ): 
+                (activeJob.applyLink ? (
                     <>
                         <h4>Apply Link: <a className='hover:text-blue-300 underline' href={activeJob.applyLink} target='_blank' rel="noopener noreferrer" onClick={handleExternalApplyClick}>{activeJob.applyLink}</a></h4>
                         <Dialog open={isExternalApplyDialogOpen} onOpenChange={setIsExternalApplyDialogOpen}>
@@ -105,11 +119,6 @@ const JobDescriptionTile = ({ activeJob }) => {
                             </DialogContent>
                         </Dialog>
                     </>
-                ) : isSubmitted ? (
-                    <div className="flex items-center space-x-2">
-                        <span className="text-green-500 font-semibold">Submitted</span>
-                        <span className="text-sm text-gray-500">({submittedTime})</span>
-                    </div>
                 ) : (
                     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                         <DialogTrigger asChild>
@@ -142,8 +151,8 @@ const JobDescriptionTile = ({ activeJob }) => {
                             <Button onClick={handleSubmitApplication}>Apply to Job</Button>
                         </DialogContent>
                     </Dialog>
-                )}
-                <p className='italic text-slate-500'>last updated: {activeJob.updatedAt}</p>
+                ))}
+            <p className='italic text-slate-500'>last updated: {activeJob.updatedAt}</p>
             </div>
         </>
     )

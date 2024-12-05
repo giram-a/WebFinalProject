@@ -9,6 +9,7 @@ import UserRoute from "./routes/user.route.js";
 import { clerkMiddleware, verifyToken } from "@clerk/express";
 import paymentRouter from "./routes/payment.route.js";
 import emailRouter from "./routes/email.route.js";
+import statsRouter from "./routes/stats.route.js";
 dotenv.config();
 
 const app = express();
@@ -64,6 +65,7 @@ app.use("/job", jobRoute);
 app.use("/user", UserRoute);
 app.use("/payment", paymentRouter);
 app.use("/email", emailRouter);
+app.use("/stats", statsRouter);
 
 app.listen(process.env.PORT, () => {
   database.connectToDb();

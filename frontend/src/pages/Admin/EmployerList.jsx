@@ -50,7 +50,7 @@ const EmployerList = () => {
     const handleRowClick = async (companyId) => {
         try {
             const response = await getCompanyById(companyId, await getToken());
-            console.log(response.data)
+            // console.log(response.data)
             setSelectedCompany(response.data);
             setIsDrawerOpen(true);
         } catch (error) {
@@ -73,11 +73,10 @@ const EmployerList = () => {
                 title: "Success",
                 description: "Company has been approved.",
             });
-            const emailRes = await sendEmail("companyApproval",selectedCompany.email, await getToken());
-            console.log("email",emailRes);
+            const emailRes = await sendEmail("companyApproval",selectedCompany.email, await getToken(),{companyName: selectedCompany.companyName});
             setIsDrawerOpen(false);
             const updatedCompanies = await getAllCompanies(await getToken());
-            console.log(updatedCompanies);
+            // console.log(updatedCompanies);
             setCompanies(updatedCompanies.data);
         } catch (error) {
             console.error("Failed to approve company:", error);
@@ -102,7 +101,7 @@ const EmployerList = () => {
             setIsDrawerOpen(false);
             // Refresh the companies list
             const updatedCompanies = await getAllCompanies(await getToken());
-            console.log(updatedCompanies);
+            // console.log(updatedCompanies);
             setCompanies(updatedCompanies.data);
         } catch (error) {
             console.error("Failed to deny company:", error);
@@ -113,9 +112,30 @@ const EmployerList = () => {
             });
         }
     };
-    const handleBlockCompany = ()=>{
-        // console.log("block")
-    }
+    // const handleBlockCompany =async ()=>{
+    //     try {
+    //         const response = await updateCompany(selectedCompany._id, "BLOCKED", await getToken());
+    //         if (!response.status) {
+    //             throw new Error("Failed to block company");
+    //         }
+    //         toast({
+    //             title: "Success",
+    //             description: "Company has been blocked.",
+    //         });
+    //         setIsDrawerOpen(false);
+    //         // Refresh the companies list
+    //         const updatedCompanies = await getAllCompanies(await getToken());
+    //         // console.log(updatedCompanies);
+    //         setCompanies(updatedCompanies.data);
+    //     } catch (error) {
+    //         console.error("Failed to deny company:", error);
+    //         toast({
+    //             title: "Error",
+    //             description: "Failed to deny company. Please try again.",
+    //             variant: "destructive",
+    //         });
+    //     }
+    // }
 
     return (
 
@@ -205,7 +225,7 @@ const EmployerList = () => {
                                             </div>
                                             <div>
                                                 <h3 className="font-semibold mb-2">Access Status</h3>
-                                                    <Badge variant={selectedCompany.accessStatus === 'PENDING' ? 'outline' : 'default'}>
+                                                    <Badge variant={selectedCompany.accessStatus === 'PENDING' ||  selectedCompany.accessStatus === 'BLOCKED'? 'outline' : 'default'}>
                                                         {selectedCompany.accessStatus}
                                                     </Badge>
                                             </div>
@@ -216,9 +236,7 @@ const EmployerList = () => {
                 <Button onClick={handleDeny} variant="destructive">Deny</Button>
                 <Button onClick={handleApprove}>Approve</Button>
               </>
-            ) : (
-              <Button onClick={handleBlockCompany} variant="destructive">Block Company</Button>
-            )}
+            ) : ""}
           </div>
                                     </div>
                                 )}

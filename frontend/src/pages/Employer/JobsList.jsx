@@ -83,7 +83,7 @@ const JobsList = ()=>{
         setIsDrawerOpen(false);
         // Refresh the companies list
         const updatedCompanies = await getJobsByCompany(user.id,await getToken());
-        console.log(updatedCompanies);
+        // console.log(updatedCompanies);
         setJobs(updatedCompanies.data);
     } catch (error) {
         console.error("Failed to hide job:", error);

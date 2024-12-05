@@ -47,7 +47,7 @@ const AddJob = () => {
     
   const fetchDataForCompany = async () => {
     try {
-      console.log(user)
+      // console.log(user)
       let token = await getToken();
       const res = await findCompany(user.id, token);
       if (res.data.accessStatus === "PENDING") {
@@ -76,7 +76,7 @@ const AddJob = () => {
     e.preventDefault();
     let token = await getToken();
     const res = await createJob({...formData,companyName}, token)
-    console.log("job creation res", res);
+    // console.log("job creation res", res);
     if(res.status){
       toast({
         description: res.data.message,

@@ -66,7 +66,7 @@ const BoardColumn = ({ title, headingColor, column, cards, setCards }) => {
     const updateCardDbState = async (jobId, state) => {
         if (isLoaded && user) {
             const token = await getToken();
-            console.log("_T_ => ",token);
+            // console.log("_T_ => ",token);
             await updateJobStatus(user?.userId, jobId, state, token)
         }
     }

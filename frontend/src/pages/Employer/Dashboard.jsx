@@ -1,6 +1,4 @@
-"use client"
-
-import { useState, useEffect } from 'react';
+import { useState, useEffect, act } from 'react';
 import { findCompany , createCompany} from "@/api/companyApi";
 import { useAuth, useUser } from "@clerk/clerk-react"
 import { Button } from "@/components/ui/button"
@@ -16,6 +14,8 @@ import {
 } from "@/components/ui/dialog"
 import { toast } from "@/hooks/use-toast"
 import { Toaster } from '@/components/ui/toaster';
+import { Card } from '@/components/ui/card';
+import { getEmployerStats } from '@/api/statsApi';
 
 const Dashboard = () => {
   const { getToken } = useAuth()
@@ -25,12 +25,35 @@ const Dashboard = () => {
   const [companyAddress, setCompanyAddress] = useState('');
   const [companyProfilePic, setCompanyProfilePic] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [stats, setStats] = useState({
+    applicants:0,
+    jobCount:0,
+    activeJobs:0,
+    resumeCount:0
+  });
 
   useEffect(() => {
     if (isLoaded && user) {
       fetchDataForCompany();
+      fetchStatsForEmployer();
     }
+    
   }, []);
+  const fetchStatsForEmployer = async () => {
+    try {
+      let token = await getToken();
+      const res = await getEmployerStats(token,user.id);
+      // console.log(res);
+      setStats(res.data.data);
+    } catch (error) {
+      console.error("Error fetching company data:", error);
+      toast({
+        title: "Error",
+        description: "Failed to fetch company data. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
 
   const fetchDataForCompany = async () => {
     try {
@@ -61,7 +84,7 @@ const Dashboard = () => {
         profilePic: companyProfilePic,
         user: user.id
       }, token);
-      console.log(res);
+      // console.log(res);
       if (res.status) {
         toast({
           title: "Success",
@@ -88,6 +111,7 @@ const Dashboard = () => {
   }
 
   return (
+    
     <div className='flex flex-col items-center justify-center min-h-screen'>
       <Toaster/>
       <Dialog open={isDialogOpen} onOpenChange={() => {}}>
@@ -157,6 +181,32 @@ const Dashboard = () => {
           </form>
         </DialogContent>
       </Dialog>
+
+    <div className="p-6">
+      <h1 className="text-3xl font-semibold mb-6">Your statistics</h1>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <Card className="bg-blue-50 shadow-md p-6 rounded-lg">
+          <h2 className="text-lg font-medium text-gray-700">No of Applicants</h2>
+          <p className="text-2xl font-bold text-blue-600">{stats.applicants}</p>
+        </Card>
+
+        <Card className="bg-green-50 shadow-md p-6 rounded-lg">
+          <h2 className="text-lg font-medium text-gray-700">No of Acive Jobs</h2>
+          <p className="text-2xl font-bold text-green-600">{stats.activeJobs}</p>
+        </Card>
+
+        <Card className="bg-yellow-50 shadow-md p-6 rounded-lg">
+          <h2 className="text-lg font-medium text-gray-700">Total jobs posted</h2>
+          <p className="text-2xl font-bold text-yellow-600">{stats.jobCount}</p>
+        </Card>
+
+        <Card className="bg-purple-50 shadow-md p-6 rounded-lg">
+          <h2 className="text-lg font-medium text-gray-700">No of Resumes</h2>
+          <p className="text-2xl font-bold text-purple-600">{stats.resumeCount}</p>
+        </Card>
+      </div>
+    </div>
     </div>
   )
 }

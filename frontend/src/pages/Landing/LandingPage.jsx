@@ -17,7 +17,7 @@ const LandingPage = () => {
 
     window.addEventListener('scroll', handleScroll);
     if(isLoaded && user){
-      console.log(user);
+      // console.log(user);
       navigate('/login');
     }
     return () => window.removeEventListener('scroll', handleScroll);
@@ -90,7 +90,7 @@ const LandingPage = () => {
               Land interviews faster with our AI! Get tailored job matches,<br />
               personalized resumes, and cover letters in under a minute!
             </p>
-            <a href="#" className="bg-blue-600 text-white px-8 py-3 rounded-full text-lg font-medium hover:bg-blue-700 transition duration-300">
+            <a href="/signup" className="bg-blue-600 text-white px-8 py-3 rounded-full text-lg font-medium hover:bg-blue-700 transition duration-300">
               Try for Free
             </a>
           </div>
@@ -180,7 +180,7 @@ const LandingPage = () => {
             Experience a Rapid and Successful Leap into <br />
             Your Next Career
           </h2>
-          <a href="#" className="bg-blue-600 text-white px-8 py-3 rounded-full text-lg font-medium hover:bg-blue-700 transition duration-300">
+          <a href="/signup" className="bg-blue-600 text-white px-8 py-3 rounded-full text-lg font-medium hover:bg-blue-700 transition duration-300">
             Try it for Free
           </a>
         </div>

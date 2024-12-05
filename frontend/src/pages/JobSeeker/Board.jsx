@@ -51,7 +51,7 @@ export const Board = () => {
                     date: formatDate(item.details.date)
                 }
             }));
-            console.log(output);
+            // console.log(output);
             setCards(output)
         }
     }, [UserData])
