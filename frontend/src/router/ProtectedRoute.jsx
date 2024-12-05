@@ -10,12 +10,11 @@ export default function ProtectedRoute({ allowedRoles, children }) {
     }
 
     if (!isSignedIn) {
-        return <Navigate to="/" replace state={{ from: location }} />;
+        return <Navigate to="/login" replace state={{ from: location }} />;
     }
-
     if (user && !allowedRoles.includes(user.publicMetadata.role)) {
         console.log("No valid role");
-        return <Navigate to="/" replace state={{ from: location }} />;
+        return <Navigate to="/login" replace state={{ from: location }} />;
     }
     return children ? children : <Outlet />;
 }

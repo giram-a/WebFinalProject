@@ -198,7 +198,7 @@ const JobsListing = () => {
         }
       </div>
 
-      {UserData && UserData?.isPremiumUser == false ? (
+      {UserData && UserData?.isPremiumUser == true ? (
         <div className='md:w-[27%] border rounded-md right-0 mt-4 fixed md:block xs:hidden flex flex-col h-full mr-4'>
 
           <div className="flex-1 overflow-y-auto mb-4 h-[83%] scrollbar-hidden p-4">

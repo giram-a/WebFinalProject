@@ -24,7 +24,6 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const { fetchUser } = useUserStore();
-
   useEffect(() => {
     if (isSignedIn && user) {
       const queryParams = new URLSearchParams(location.search);
@@ -105,7 +104,7 @@ const Login = () => {
     try {
       const result = await signIn.authenticateWithRedirect({
         strategy: 'oauth_google',
-        redirectUrl: '/'
+        redirectUrl: '/login'
       });
 
       if (result.status === 'complete') {

@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react';
 import Logo from "../../assets/logo.png";
+import { useUser } from '@clerk/clerk-react';
+import { useNavigate } from 'react-router-dom';
 
 const LandingPage = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeFAQ, setActiveFAQ] = useState(null);
+  const { isLoaded, user } = useUser();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -12,8 +16,13 @@ const LandingPage = () => {
     };
 
     window.addEventListener('scroll', handleScroll);
+    if(isLoaded && user){
+      console.log(user);
+      navigate('/login');
+    }
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    
+  }, [isLoaded]);
 
   const handleNavLinkClick = (event) => {
     event.preventDefault();
@@ -44,7 +53,7 @@ const LandingPage = () => {
                 <a href="#testimonials" onClick={handleNavLinkClick} className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Testimonials</a>
                 <a href="#faq" onClick={handleNavLinkClick} className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">FAQ</a>
                 <a href="/login" className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Login</a>
-                <a href="/register" className="ml-4 px-4 py-2 rounded-full text-sm font-medium text-white bg-black hover:bg-gray-800">SIGN UP</a>
+                <a href="/signup" className="ml-4 px-4 py-2 rounded-full text-sm font-medium text-white bg-black hover:bg-gray-800">SIGN UP</a>
               </div>
               <div className="md:hidden flex items-center">
                 <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">
@@ -66,7 +75,7 @@ const LandingPage = () => {
               <a href="#testimonials" onClick={handleNavLinkClick} className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Testimonials</a>
               <a href="#faq" onClick={handleNavLinkClick} className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">FAQ</a>
               <a href="/login" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Login</a>
-              <a href="/register" className="block px-3 py-2 rounded-md text-base font-medium text-white bg-black hover:bg-gray-800">SIGN UP</a>
+              <a href="/signup" className="block px-3 py-2 rounded-md text-base font-medium text-white bg-black hover:bg-gray-800">SIGN UP</a>
             </div>
           </div>
         </nav>
