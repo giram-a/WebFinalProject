@@ -6,8 +6,8 @@
 
 ## Contributors:
 
-- **Amey Satwe (002244396)**
 - **Aniket Giram (002808219)**
+- **Amey Satwe (002244396)**
 - **Yashraj Kadam (002853503)**
 - **Shreya Thakur (002818444)**
 
